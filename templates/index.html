@@ -1,0 +1,427 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>X Reach | Clipping & Distribution Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05060d;--fg:#f4f1ea;--mut:#8b90a7;--acc:#3b5bff;--acc2:#8a5bff;--card:#0e1020;--bd:#22264a}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+canvas#bg{position:fixed;inset:0;z-index:-1}
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;display:flex;gap:4px;padding:6px;background:#000c;backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px}
+nav a{color:var(--fg);text-decoration:none;padding:9px 16px;border-radius:99px;font-size:14px;transition:.3s}
+nav a:hover,nav a.on{background:var(--fg);color:#000}
+section{min-height:100vh;padding:120px 6vw 60px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.tag{font:12px monospace;letter-spacing:.2em;color:var(--acc);margin-bottom:18px}
+h1{font-size:clamp(70px,16vw,220px);line-height:.9;letter-spacing:-.04em;background:linear-gradient(90deg,#fff,var(--acc),var(--acc2),#fff);background-size:300%;-webkit-background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes flow{to{background-position:300%}}
+h2{font-size:clamp(34px,6vw,76px);letter-spacing:-.03em;margin-bottom:16px}h2 span{color:#8fa2ff}
+p.lead{color:var(--mut);max-width:680px;font-size:19px;line-height:1.6;margin:18px 0 30px}
+.btn{background:var(--fg);color:#000;border:0;padding:16px 30px;border-radius:99px;font:600 16px 'Space Grotesk';cursor:pointer;text-decoration:none;display:inline-block;transition:.3s;position:relative;overflow:hidden}
+.btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 40px #3b5bff88}
+.float{position:absolute;font-size:40px;animation:fl 5s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-26px) rotate(8deg)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;width:100%;max-width:1100px;margin-top:30px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:30px;text-align:left;transition:.4s}
+.card:hover{transform:translateY(-8px);border-color:var(--acc);box-shadow:0 20px 60px #3b5bff33}
+.card h3{font-size:24px;margin:10px 0}.card p{color:var(--mut);line-height:1.6}
+.num{font-size:clamp(44px,6vw,80px);font-weight:700}.stat{text-align:center}.stat small{color:var(--mut);letter-spacing:.15em;font-size:12px}
+.marq{overflow:hidden;width:100%;margin:30px 0}.marq div{display:flex;gap:16px;width:max-content;animation:m 25s linear infinite}
+.marq span{border:1px solid var(--bd);background:var(--card);padding:18px 32px;border-radius:18px;white-space:nowrap}
+@keyframes m{to{transform:translateX(-50%)}}
+.rev{opacity:0;transform:translateY(50px);transition:1s}.rev.in{opacity:1;transform:none}
+.steps{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.step{flex:1 1 200px;max-width:250px;padding:24px;border-radius:20px;background:var(--card);border:1px solid var(--bd);cursor:pointer;transition:.3s}
+.step.on{background:var(--acc);transform:scale(1.05)}.step b{font-size:34px;display:block}
+form{background:var(--card);border:1px solid var(--bd);padding:34px;border-radius:26px;width:100%;max-width:720px;text-align:left;display:grid;gap:14px}
+label{font:12px monospace;letter-spacing:.12em;color:var(--mut)}
+input,select,textarea{width:100%;background:#080a16;border:1px solid var(--bd);color:var(--fg);padding:15px;border-radius:14px;font:16px 'Space Grotesk';margin-top:6px;outline:0;transition:.3s}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 4px #3b5bff33}
+#msg{text-align:center;font-weight:600}
+#cb{position:fixed;right:22px;bottom:22px;z-index:60}
+#cbtn{width:62px;height:62px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;font-size:28px;cursor:pointer;animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 16px #3b5bff22}}
+#cw{display:none;width:340px;max-width:92vw;height:460px;background:var(--card);border:1px solid var(--bd);border-radius:22px;margin-bottom:12px;flex-direction:column;overflow:hidden}
+#cm{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.m{padding:10px 14px;border-radius:14px;max-width:85%;font-size:14px;line-height:1.5}.u{background:var(--acc);align-self:flex-end}.a{background:#1a1d38}
+#cf{display:flex;border-top:1px solid var(--bd)}#cf input{border:0;border-radius:0;margin:0}
+footer{text-align:center;color:var(--mut);padding:40px}
+#contact{display:none}
+.car{position:relative;height:520px;width:100%;max-width:1100px;perspective:1300px;margin-top:20px}
+.cc{position:absolute;left:50%;top:20px;width:230px;height:410px;margin-left:-115px;border-radius:26px;border:1px solid var(--bd);background:linear-gradient(160deg,#1f2350,#090a16);overflow:hidden;transition:all .6s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;justify-content:flex-end;padding:18px;text-align:left}
+.cc video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cc b{position:relative;font-size:18px;line-height:1.25}
+.vw{position:relative;margin-top:10px;align-self:flex-start;font:12px monospace;background:#000a;border:1px solid var(--bd);padding:6px 12px;border-radius:99px}
+.ar{position:absolute;top:210px;z-index:99;width:54px;height:54px;border-radius:50%;border:1px solid var(--bd);background:#000a;color:#fff;font-size:22px;cursor:pointer;transition:.3s}
+.ar:hover{background:var(--acc)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.tabs button{background:var(--card);color:var(--fg);border:1px solid var(--bd);padding:12px 22px;border-radius:99px;font:600 15px 'Space Grotesk';cursor:pointer;transition:.3s}
+.tabs button.on,.tabs button:hover{background:var(--fg);color:#000}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;width:100%;max-width:1100px;margin-top:10px}
+.pc{background:var(--card);border:1px solid var(--bd);border-radius:24px;padding:30px;text-align:left;display:flex;flex-direction:column;transition:.4s;animation:up .6s both}
+.pc:hover{transform:translateY(-8px);border-color:var(--acc);box-shadow:0 20px 60px #3b5bff33}
+@keyframes up{from{opacity:0;transform:translateY(30px)}}
+.pc h3{font-size:22px}.pc .pr{font-size:38px;font-weight:700;margin:10px 0 2px}.pc small{color:var(--mut)}
+.pc ul{list-style:none;padding:0;margin:18px 0;color:#c9ccdd;line-height:1.5;flex:1}.pc li{padding:5px 0 5px 22px;position:relative}.pc li:before{content:"✓";position:absolute;left:0;color:var(--acc)}
+.cur{display:inline-flex;border:1px solid var(--bd);border-radius:99px;overflow:hidden;margin-left:10px}.cur button{background:none;border:0;color:var(--fg);padding:10px 16px;cursor:pointer;font:600 14px 'Space Grotesk'}.cur button.on{background:var(--acc)}
+.note{color:var(--mut);max-width:800px;margin-top:20px;line-height:1.6;font-size:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:640px){.row2{grid-template-columns:1fr}}
+
+:root{--acc:#2f6bff;--acc2:#00d4ff;--bd:#1a2347}
+body{background:#000}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(0deg,#ffffff07 0 1px,transparent 1px 4px)}
+#glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:-1;background:radial-gradient(#2f6bff33,transparent 65%);transform:translate(-50%,-50%)}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:99;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+h2 span{background:linear-gradient(90deg,#7aa2ff,#00d4ff);-webkit-background-clip:text;color:transparent}
+.tag{color:var(--acc2);text-shadow:0 0 12px #00d4ff88}
+.card,.pc,.step,form{background:linear-gradient(160deg,#0b1020,#04060e);box-shadow:inset 0 0 0 1px #ffffff08}
+.card:hover,.pc:hover{box-shadow:0 0 0 1px var(--acc),0 20px 70px #2f6bff44}
+.btn{background:linear-gradient(90deg,#fff,#cfe0ff)}.btn:hover{box-shadow:0 0 40px #00d4ff88}
+nav{box-shadow:0 0 30px #2f6bff33}
+.tl{position:relative;width:100%;max-width:900px;margin-top:30px;text-align:left}
+.tl:before{content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:linear-gradient(var(--acc),var(--acc2),transparent)}
+.ph{position:relative;margin:0 0 26px 70px;padding:26px;border:1px solid var(--bd);border-radius:20px;background:linear-gradient(160deg,#0b1020,#04060e);transition:.4s}
+.ph:hover{border-color:var(--acc);transform:translateX(8px);box-shadow:0 0 40px #2f6bff33}
+.ph i{position:absolute;left:-70px;top:22px;width:50px;height:50px;border-radius:50%;background:#000;border:2px solid var(--acc2);display:flex;align-items:center;justify-content:center;font:700 14px monospace;font-style:normal;box-shadow:0 0 20px #00d4ff66}
+.ph small{font:11px monospace;letter-spacing:.18em;color:var(--acc2)}.ph h3{font-size:24px;margin:6px 0 8px}.ph p{color:var(--mut);line-height:1.6}
+.ph em{display:block;margin-top:12px;font:13px monospace;color:#9fb6ff;font-style:normal}
+details{width:100%;max-width:800px;text-align:left;border:1px solid var(--bd);border-radius:16px;padding:18px 22px;margin:8px 0;background:#070a16;transition:.3s}
+details:hover{border-color:var(--acc)}summary{cursor:pointer;font-weight:600;font-size:18px}details p{color:var(--mut);margin-top:10px;line-height:1.6}
+
+.float{display:none}
+.pt{position:absolute;width:78px;height:78px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 50px #2f6bff66;animation:fl 5s ease-in-out infinite;z-index:1}
+.pt svg{width:46px;height:46px}
+.dgw{width:100%;max-width:1150px;display:grid;grid-template-columns:.9fr 1.4fr;gap:20px;align-items:center;text-align:left}
+.rot{font-size:clamp(44px,6vw,84px);font-weight:700;line-height:1.05;letter-spacing:-.03em}.rot span{display:block}.rot #rw{color:#8fa2ff;transition:.5s}
+.dg{position:relative;height:560px}
+.dg svg{position:absolute;inset:0;width:100%;height:100%}
+.dg path{fill:none;stroke:#9fb6ff;stroke-width:1.5;stroke-dasharray:5 7;vector-effect:non-scaling-stroke;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-24}}
+.globe{position:absolute;left:2%;top:50%;width:150px;height:150px;margin-top:-75px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7fb2ff,#1b3a8a 45%,#050a1e 75%);box-shadow:0 0 60px #2f6bffaa,inset -20px -20px 40px #000;animation:pl2 3s ease-in-out infinite}
+@keyframes pl2{50%{box-shadow:0 0 110px #00d4ffcc,inset -20px -20px 40px #000}}
+.ph2{position:absolute;width:112px;height:196px;border-radius:18px;border:1px solid #2a3570;background:linear-gradient(160deg,#1f2a66,#070914);overflow:hidden;animation:fl 6s ease-in-out infinite;display:flex;align-items:flex-end;padding:8px;font-size:11px;font-weight:600;line-height:1.2;box-shadow:0 10px 40px #0008}
+.ph2 video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.ph2 b{position:relative;text-shadow:0 1px 6px #000}
+.flow{display:flex;gap:14px;font:12px monospace;letter-spacing:.25em;color:var(--mut);margin-top:26px;flex-wrap:wrap}.flow span{transition:.4s}.flow span.on{color:var(--acc2);text-shadow:0 0 12px #00d4ff}
+.pro{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;width:100%;max-width:1100px;align-items:center}
+.orb{position:relative;width:340px;height:340px;max-width:100%;margin:0 auto;border-radius:50%;border:1px dashed #2a3570}
+.ctr{position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px;border-radius:50%;background:radial-gradient(#0f1736,#000);border:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 50px #2f6bff55}
+.nd{position:absolute;width:70px;height:70px;margin:-35px;border-radius:20px;background:#0b1020;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;transition:.4s}
+.nd.on{background:var(--acc);transform:scale(1.2);box-shadow:0 0 40px #2f6bff}
+.nd small{position:absolute;top:78px;font:11px monospace;white-space:nowrap;color:var(--mut)}.nd.on small{color:#fff}
+.sc{background:linear-gradient(160deg,#0b1020,#04060e);border:1px solid var(--bd);border-radius:26px;padding:34px;text-align:left;min-height:400px;display:flex;flex-direction:column;animation:up .5s}
+.sc .bd{display:inline-block;align-self:flex-start;font:12px monospace;letter-spacing:.1em;color:var(--acc2);border:1px solid var(--acc);border-radius:99px;padding:6px 14px}
+.sc h3{font-size:44px;margin:18px 0 6px}.sc h4{color:#8fa2ff;font-size:20px;margin-bottom:10px}.sc p{color:var(--mut);line-height:1.6}
+.sc ul{list-style:none;padding:0;margin:16px 0}.sc li{padding:6px 0 6px 24px;position:relative}.sc li:before{content:"✓";position:absolute;left:0;color:var(--acc2)}
+.sc .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bd);padding-top:16px;gap:12px;flex-wrap:wrap}
+@media(max-width:800px){.dgw,.pro{grid-template-columns:1fr}.dg{height:480px}.pt{width:56px;height:56px}.pt svg{width:32px;height:32px}}
+
+</style></head><body>
+<canvas id="bg"></canvas>
+<nav><a href="#home" class="on">Home</a><a href="#results">Results</a><a href="#how">How it works</a><a href="#services">Services</a><a href="#why">Why X Reach</a><a href="#contact">Contact</a></nav>
+
+<section id="home">
+<span class="float" style="left:10%;top:28%">🎬</span><span class="float" style="right:12%;top:34%;animation-delay:1s">📈</span><span class="float" style="left:16%;bottom:16%;animation-delay:2s">🔥</span><span class="float" style="right:18%;bottom:20%;animation-delay:3s">🚀</span>
+<div class="tag">( 01 ) DISTRIBUTION ENGINE</div>
+<h1>X Reach</h1>
+<p class="lead">We cut short-form clips from your long-form content and post them daily across hundreds of pages on YouTube Shorts, Instagram, TikTok and Facebook. Lifetime marketing, not rented ads.</p>
+<a href="#contact" class="btn">Book a Strategy Call →</a>
+</section>
+
+<section id="results">
+<div class="tag rev">( 02 ) SCALE</div>
+<h2 class="rev">Built to make you <span>go viral</span></h2>
+<div class="grid">
+<div class="stat rev"><div class="num" data-n="10" data-s="+">0</div><small>PAGES PER PLATFORM TO START</small></div>
+<div class="stat rev"><div class="num" data-n="4">0</div><small>PLATFORMS</small></div>
+<div class="stat rev"><div class="num" data-n="2">0</div><small>POSTS / PAGE / DAY</small></div>
+<div class="stat rev"><div class="num" data-n="50" data-s="+">0</div><small>CLIPPERS ON TEAM</small></div>
+</div>
+<div class="marq"><div><span>▶ YouTube Shorts</span><span>📸 Instagram Reels</span><span>🎵 TikTok</span><span>📘 Facebook Reels</span><span>▶ YouTube Shorts</span><span>📸 Instagram Reels</span><span>🎵 TikTok</span><span>📘 Facebook Reels</span></div></div>
+</section>
+
+<section id="how">
+<div class="tag">( 03 ) HOW WE WORK</div>
+<h2 class="rev">Four steps. <span>Zero hassle.</span></h2>
+<div class="steps" id="steps"></div>
+<p class="lead" id="sd"></p>
+</section>
+
+<section id="services">
+<div class="tag">( 04 ) SERVICES</div>
+<h2 class="rev">Pick how you want to <span>grow</span></h2>
+<div class="grid">
+<div class="card rev"><div class="tag">CONTINUOUS GROWTH</div><h3>Long Term</h3><p>3-month plan with performance testing that moves into a retainer, plus steady daily clipping across all pages.</p><br><a class="btn" href="#contact" data-svc="Long Term">Get this →</a></div>
+<div class="card rev"><div class="tag">HIGH-IMPACT SPRINT</div><h3>Short Term</h3><p>25-30 days of PR campaign and mass clipping to create an immediate surge across mega and theme pages.</p><br><a class="btn" href="#contact" data-svc="Short Term">Get this →</a></div>
+<div class="card rev"><div class="tag">FULL-STACK</div><h3>End-to-End</h3><p>We make the content and distribute it. Everything handled for you from start to finish.</p><br><a class="btn" href="#contact" data-svc="End-to-End">Get this →</a></div>
+</div>
+</section>
+
+<section id="why">
+<div class="tag">( 05 ) THE UNFAIR ADVANTAGE</div>
+<h2 class="rev">Why creators <span>choose us</span></h2>
+<div class="grid">
+<div class="card rev"><h3>🌐 Scale of pages</h3><p>Not 1 page. Dozens of pages on 4 platforms, so your content shows up everywhere your audience scrolls.</p></div>
+<div class="card rev"><h3>💸 Beats paid ads</h3><p>Ads stop when the budget stops. Clips stay online and keep bringing new audience for years.</p></div>
+<div class="card rev"><h3>🎯 Right audience</h3><p>We pick pages and niches that match your viewers, so reach turns into followers and leads.</p></div>
+<div class="card rev"><h3>📊 Tracked results</h3><p>You see what is posted and how it performs. You stay in control of your content.</p></div>
+</div>
+</section>
+
+<section id="contact">
+<div class="tag">( 06 ) LET'S TALK</div>
+<h2 class="rev">Start your <span>campaign</span></h2>
+<form id="f">
+<div><label>NAME *</label><input name="name" required></div>
+<div><label>EMAIL *</label><input name="email" type="email" required></div>
+<div><label>WHATSAPP / PHONE</label><input name="phone"></div>
+<div><label>CHANNEL / WEBSITE / INSTAGRAM LINK *</label><input name="links" required></div>
+<div><label>SERVICE</label><select name="service" id="svc"><option>Long Term</option><option>Short Term</option><option>End-to-End</option><option>Not sure</option></select></div>
+<div><label>MONTHLY BUDGET</label><select name="budget"><option>Under ₹20k</option><option>₹20k - ₹50k</option><option>₹50k - ₹1.5L</option><option>₹1.5L+</option></select></div>
+<div><label>TELL US YOUR GOAL</label><textarea name="goal" rows="3"></textarea></div>
+<button class="btn" type="submit" id="sb">Send Request →</button><div id="msg"></div>
+</form>
+</section>
+<section id="dist">
+<div class="dgw"><div>
+<div class="tag">( 00 ) DISTRIBUTION</div>
+<div class="rot"><span>You want</span><span id="rw">reach?</span></div>
+<p class="lead">One long video goes in. Dozens of short clips come out and spread across hundreds of pages on every major platform.</p>
+<div class="flow" id="flow"><span>EXTRACT</span>→<span>OPTIMIZE</span>→<span>REPURPOSE</span></div>
+</div>
+<div class="dg" id="dg"><svg viewBox="0 0 100 100" preserveAspectRatio="none" id="dsv"></svg><div class="globe"></div></div></div>
+</section>
+<section id="process">
+<div class="tag">( 03 ) OUR PROCESS</div>
+<h2 class="rev">How we go from your video to <span>real reach</span></h2>
+<div class="pro"><div class="orb" id="orb"><div class="ctr"><b>X Reach</b><small style="font:11px monospace;color:var(--acc2)">ONBOARDING</small></div></div><div class="sc" id="sc"></div></div>
+</section>
+
+<section id="what">
+<div class="tag">( 10 ) WHAT WE ACTUALLY DO</div>
+<h2 class="rev">From your long video to <span>millions of eyes</span></h2>
+<p class="lead">You give us long-form content: a podcast, interview, talk or YouTube video. We turn it into short clips and post them every day across a large network of pages on four platforms, so people who never knew you find you.</p>
+<div class="tl">
+<div class="ph rev"><i>01</i><small>PHASE 01 // DISCOVERY</small><h3>Strategy call</h3><p>We learn who you are, who you want to reach and what kind of content fits. We agree on the plan, the platforms and the number of pages.</p><em>Deliverable: a clear game plan</em></div>
+<div class="ph rev"><i>02</i><small>PHASE 02 // PRODUCTION</small><h3>Find, cut and edit</h3><p>We find the strongest moments in your video, remove dead silence, add bold captions, hooks and sound, and format every clip vertical (9:16) for mobile.</p><em>Deliverable: ready-to-post clips</em></div>
+<div class="ph rev"><i>03</i><small>PHASE 03 // PREPARATION</small><h3>Page setup and warm-up</h3><p>We create and warm up fresh pages, or use proven ones from our network, on YouTube Shorts, Instagram, TikTok and Facebook. We start with 10 pages per platform and scale up.</p><em>Deliverable: pages ready to perform</em></div>
+<div class="ph rev"><i>04</i><small>PHASE 04 // DISTRIBUTION</small><h3>Daily posting at scale</h3><p>Your clips go live on every page on a steady schedule, with different hooks and captions tested on different pages.</p><em>Deliverable: content live everywhere</em></div>
+<div class="ph rev"><i>05</i><small>PHASE 05 // INTELLIGENCE</small><h3>Weekly report and optimization</h3><p>Every week you get a clear summary of views per page, which clips and hooks worked and what we will change. We put more volume behind the winners.</p><em>Deliverable: clear results and next steps</em></div>
+</div>
+</section>
+
+<section id="ways">
+<div class="tag">( 11 ) WAYS WE GET YOU VIRAL</div>
+<h2 class="rev">Six ways we <span>multiply your reach</span></h2>
+<div class="grid">
+<div class="card rev"><h3>🎬 Fan-page clipping</h3><p>Many pages post your best moments at once, so your name appears across feeds.</p></div>
+<div class="card rev"><h3>🎯 Theme pages</h3><p>Niche pages in Tech, AI, Business, Education and News that reach people who already love your topic.</p></div>
+<div class="card rev"><h3>📣 PR and seeding</h3><p>A short, high-impact sprint of 25-30 days where we push your clips through many pages for a quick surge.</p></div>
+<div class="card rev"><h3>🧪 Hook testing</h3><p>We try different openings and angles, then keep what performs and drop what does not.</p></div>
+<div class="card rev"><h3>🌐 Four platforms</h3><p>YouTube Shorts, Instagram Reels, TikTok and Facebook, so you are not relying on one algorithm.</p></div>
+<div class="card rev"><h3>📅 Steady volume</h3><p>Daily posting for months builds compounding reach that a one-time ad cannot.</p></div>
+</div>
+</section>
+
+
+<section id="clips">
+<div class="tag">( 07 ) REAL CLIPS</div>
+<h2 class="rev">Real reels. <span>Real reach.</span></h2>
+<p class="lead">A look at the kind of short-form clips we cut and post for creators and founders.</p>
+<div class="car" id="car"><button class="ar" id="pv" style="left:0">←</button><button class="ar" id="nx" style="right:0">→</button></div>
+</section>
+
+
+<section id="pricing">
+<div class="tag">( 08 ) PRICING</div>
+<h2 class="rev">Simple plans. <span>Clear pricing.</span><span class="cur"><button id="cu" class="on">USD</button><button id="ci2">INR</button></span></h2>
+<div class="tabs" id="tabs"></div>
+<div class="pgrid" id="pg"></div>
+<p class="note" id="pn"></p>
+</section>
+
+
+<section id="faq">
+<div class="tag">( 12 ) QUESTIONS</div>
+<h2 class="rev">Things people <span>ask us</span></h2>
+<details><summary>How is this different from paid ads?</summary><p>Ads stop when your budget stops. Clips stay online and keep bringing viewers, and many pages posting at once gives wide reach for the same effort.</p></details>
+<details><summary>Do you guarantee views?</summary><p>No one can honestly promise exact views. We test, report clearly every week and put more volume behind what works. Some plans bill only for views delivered.</p></details>
+<details><summary>How long until I see results?</summary><p>Short-term sprints run 25-30 days. Retainers run 3 months so there is time to test, learn and scale.</p></details>
+<details><summary>Do I need to do anything?</summary><p>Just share your long-form content and approve the plan. We handle editing, pages, posting and reporting.</p></details>
+</section>
+
+<section id="apply">
+<div class="tag">( 09 ) LET'S TALK</div>
+<h2 class="rev">Submit your <span>campaign brief</span></h2>
+<form id="lead">
+<div class="row2"><div><label>NAME *</label><input name="name" placeholder="Alex Morgan" required></div>
+<div><label>CONTACT INFO *</label><input name="contact" placeholder="Email, WhatsApp or phone number" required></div></div>
+<div class="row2"><div><label>COMPANY / BRAND NAME</label><input name="company" placeholder="e.g. Acme Media"></div>
+<div><label>YOUR POSITION</label><input name="position" placeholder="e.g. Founder, CMO, Creator"></div></div>
+<div><label>SOCIAL LINKS / WEBSITE *</label><input name="links" placeholder="Website, YouTube channel, Instagram or podcast link" required></div>
+<div class="row2"><div><label>SERVICE *</label><select name="service" id="sv2"><option>3-Month Retainer</option><option>Short-term Campaign</option><option>Page Management</option><option>End-to-End</option></select></div>
+<div><label>BUDGET *</label><select name="budget" id="bd2"></select></div></div>
+<div><label>TELL US YOUR GOAL</label><textarea name="goal" rows="3"></textarea></div>
+<button class="btn" type="submit" id="sb2">Submit Inquiry →</button><div id="msg2" style="text-align:center;font-weight:600"></div>
+<small style="color:var(--mut);text-align:center">We reply within 24 hours. No obligations.</small>
+</form>
+</section>
+
+
+<footer>© 2026 X Reach. India's clipping and distribution agency.</footer>
+
+<div id="cb"><div id="cw"><div id="cm"><div class="m a">Hi! I'm the X Reach assistant. Ask me anything about clipping, pricing or how we work.</div></div>
+<div id="cf"><input id="ci" placeholder="Type your question..."><button class="btn" id="cs" style="border-radius:0">Send</button></div></div>
+<button id="cbtn">💬</button></div>
+
+<script>
+// animated particle background
+const c=document.getElementById('bg'),x=c.getContext('2d');let P=[];
+function rs(){c.width=innerWidth;c.height=innerHeight}rs();onresize=rs;
+for(let i=0;i<90;i++)P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5});
+let mx=-999,my=-999;onmousemove=e=>{mx=e.clientX;my=e.clientY};
+(function d(){x.clearRect(0,0,c.width,c.height);
+P.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;
+x.fillStyle='#6f86ff';x.fillRect(p.x,p.y,2,2);
+for(let j=i+1;j<P.length;j++){let q=P[j],dd=Math.hypot(p.x-q.x,p.y-q.y);if(dd<110){x.strokeStyle=`rgba(90,110,255,${.25-dd/500})`;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke()}}
+let m=Math.hypot(p.x-mx,p.y-my);if(m<150){x.strokeStyle='rgba(138,91,255,.5)';x.beginPath();x.moveTo(p.x,p.y);x.lineTo(mx,my);x.stroke()}});
+requestAnimationFrame(d)})();
+// scroll reveal + counters + nav highlight
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');const n=e.target.querySelector?.('.num');if(n&&!n.d){n.d=1;const t=+n.dataset.n;let v=0;const iv=setInterval(()=>{v+=Math.ceil(t/40);if(v>=t){v=t;clearInterval(iv)}n.textContent=v+(n.dataset.s||'')},35)}}}),{threshold:.2});
+document.querySelectorAll('.rev').forEach(e=>io.observe(e));
+const links=[...document.querySelectorAll('nav a')];
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+e.target.id))}),{threshold:.5}).observe&&document.querySelectorAll('section').forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+s.id))}),{threshold:.5}).observe(s));
+// steps
+const S=[["Clipping","We find your best moments, cut dead silence, add bold captions and format 9:16 so every clip hooks in 3 seconds."],["Distribution","Clips go live daily on 10+ pages per platform across YouTube, Instagram, TikTok and Facebook, scaling up over time."],["Management","Our team of clippers and page managers handle posting, timing, titles and quality. You do nothing."],["Tracking","You get clear reports on views, followers gained and which clips work, so we double down on winners."]];
+const st=document.getElementById('steps'),sd=document.getElementById('sd');let cur=0;
+S.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML=`<b>0${i+1}</b>${s[0]}`;d.onclick=()=>pick(i);st.appendChild(d)});
+function pick(i){cur=i;[...st.children].forEach((e,j)=>e.classList.toggle('on',j==i));sd.textContent=S[i][1]}pick(0);
+setInterval(()=>{if(!st.matches(':hover'))pick((cur+1)%4)},4000);
+// service buttons prefill form
+document.querySelectorAll('[data-svc]').forEach(a=>a.onclick=()=>{document.getElementById('svc').value=a.dataset.svc});
+// lead form
+document.getElementById('f').onsubmit=async e=>{e.preventDefault();const b=document.getElementById('sb'),m=document.getElementById('msg');b.disabled=true;b.textContent='Sending...';
+try{const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});const j=await r.json();
+m.textContent=j.ok?'✅ Received! We will email you shortly with how we will work together.':'⚠️ '+j.error;m.style.color=j.ok?'#4ade80':'#f87171';if(j.ok)e.target.reset()}
+catch{m.textContent='⚠️ Network error. Try again.'}b.disabled=false;b.textContent='Send Request →'};
+// chatbot
+const cw=document.getElementById('cw'),cm=document.getElementById('cm'),ci=document.getElementById('ci');let H=[];
+document.getElementById('cbtn').onclick=()=>cw.style.display=cw.style.display=='flex'?'none':'flex';
+function add(t,k){const d=document.createElement('div');d.className='m '+k;d.textContent=t;cm.appendChild(d);cm.scrollTop=cm.scrollHeight;return d}
+async function send(){const t=ci.value.trim();if(!t)return;ci.value='';add(t,'u');H.push({role:'user',content:t});const w=add('...','a');
+try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:H})});const j=await r.json();w.textContent=j.reply;H.push({role:'assistant',content:j.reply})}catch{w.textContent='Connection issue, please try again.'}}
+document.getElementById('cs').onclick=send;ci.onkeydown=e=>{if(e.key=='Enter')send()};
+// ---- point old "Contact" links to the new form + add Pricing to menu ----
+document.querySelectorAll('a[href="#contact"]').forEach(a=>a.setAttribute('href','#apply'));
+(function(){const nv=document.querySelector('nav'),a=document.createElement('a');a.href='#pricing';a.textContent='Pricing';nv.insertBefore(a,nv.querySelector('a[href="#apply"]'))})();
+
+// ---- PRICING (all prices written in USD; INR button converts at FX rate) ----
+const FX=85;let CUR='USD';
+const T={long:'Long-term',short:'Short-term',pages:'Page Management',e2e:'End-to-End'};
+const SV={long:'3-Month Retainer',short:'Short-term Campaign',pages:'Page Management',e2e:'End-to-End'};
+const D={
+long:[
+{t:'Test to Retainer',s:'3 months: test first, then lock in what works',p:'$0.80 / 1K views',n:'Month 1 (min test budget $2,500), then $6,000/month for months 2-3',b:['500-1,000 clips posted across our page network in Month 1','Pay only for views delivered in the test month','Report shortlisting the top 10-30 winning pages and formats','Winners locked into a steady monthly clip volume','Renew and scale after Month 3']},
+{t:'Clipping Retainer: Tier 1',s:'3 months: for brands with steady views',p:'$27,000',n:'$9,000 per month',b:['Dedicated clipping pod, 60+ vertical cuts per day','Instagram, YouTube Shorts, Facebook and TikTok','Fixed monthly quotas, designated pages and posting frequency','Custom hooks, sound design, strict brand standards','Weekly performance report']},
+{t:'Clipping Retainer: Tier 2',s:'3 months: maximum volume',p:'$60,000',n:'$20,000 per month',b:['Everything in Tier 1','120+ vertical cuts per day','Larger dedicated team across all platforms','Priority turnaround','Dedicated account manager']}],
+short:[{t:'CPM Campaign',s:'Pay for views delivered',p:'$2.25 / 1K views',n:'Minimum 5 million views (about $11,250)',b:['Tell us the views you want, we deploy clips across our network','Fan pages: a large pool of clippers posting across pages','Theme pages: niche pages, 70% native content and 30% brand integration','Niches: Tech, AI, Business, Education, News','Pages stay in our network for repeat pushes']}],
+pages:[
+{t:'Mini Start',s:'10 pages, 1 platform, 2 clips/day',p:'$499',n:'per month',b:['Page setup and posting','Hook and caption variations','Weekly views report per page']},
+{t:'Growth',s:'10 pages on each of 4 platforms (40 pages), 2 clips/day',p:'$1,499',n:'per month',b:['YouTube Shorts, Instagram, TikTok, Facebook','Page setup and posting','Hook and caption variations','Weekly views report per page']},
+{t:'Scale',s:'25 pages on each of 4 platforms (100 pages), 3 clips/day',p:'$3,999',n:'per month',b:['Everything in Growth','Highest volume across all platforms','Weekly views report per page']},
+{t:'Custom',s:'Any mix of pages, platforms and clips',p:'Quoted on a call',n:'built around your goal',b:['Choose platforms, number of pages and clips per day','Volume discounts at 20+, 50+ and 100+ pages']}],
+e2e:[{t:'End-to-End',s:'Custom scope, discussed on a call',p:'Custom',n:'priced by volume after a call',b:['Full video ingestion and high-retention vertical cuts','Subtitles, narrative angle testing, sound design, hook iteration','Simultaneous posting on all platforms','Tracking of every view']}]};
+const N={pages:'One-time setup fee of $40 per page (account creation, warm-up, branding). More clips per day: 3/day adds 25%, 4/day adds 50%, 5/day adds 75%. Choosing all 4 platforms gets 20% off.',long:'3-month commitment, billed monthly in advance. Results depend on content and niche, and we never promise exact view counts.',short:'You pay only for views delivered.',e2e:''};
+const cv=s=>CUR=='USD'?s:s.replace(/\$([\d,]+(?:\.\d+)?)/g,(m,x)=>'₹'+Math.round(parseFloat(x.replace(/,/g,''))*FX).toLocaleString('en-IN'));
+let tab='long';
+function drawTabs(){const t=document.getElementById('tabs');t.innerHTML='';Object.keys(T).forEach(k=>{const b=document.createElement('button');b.textContent=T[k];b.className=k==tab?'on':'';b.onclick=()=>{tab=k;drawTabs();drawPlans()};t.appendChild(b)})}
+function drawPlans(){const g=document.getElementById('pg');g.innerHTML='';
+ D[tab].forEach((p,i)=>{const c=document.createElement('div');c.className='pc';c.style.animationDelay=i*.1+'s';
+  c.innerHTML=`<h3>${p.t}</h3><small>${cv(p.s)}</small><div class="pr">${cv(p.p)}</div><small>${cv(p.n)}</small><ul>${p.b.map(x=>`<li>${cv(x)}</li>`).join('')}</ul><a class="btn" href="#apply">Choose this →</a>`;
+  c.querySelector('a').onclick=()=>setSv(SV[tab]);g.appendChild(c)});
+ document.getElementById('pn').textContent=cv(N[tab]||'')}
+document.getElementById('cu').onclick=()=>{CUR='USD';cs();drawPlans()};
+document.getElementById('ci2').onclick=()=>{CUR='INR';cs();drawPlans()};
+function cs(){document.getElementById('cu').className=CUR=='USD'?'on':'';document.getElementById('ci2').className=CUR=='INR'?'on':''}
+drawTabs();drawPlans();
+
+// ---- FORM: budget options change with service ----
+const BU={'3-Month Retainer':['Test to Retainer (from $2,500)','Tier 1 ($27,000 / 3 months)','Tier 2 ($60,000 / 3 months)','Custom'],'Short-term Campaign':['About $11,250 (5M views)','$25,000+','Custom'],'Page Management':['Mini Start ($499/mo)','Growth ($1,499/mo)','Scale ($3,999/mo)','Custom'],'End-to-End':['Discuss on a call']};
+const sv2=document.getElementById('sv2'),bd2=document.getElementById('bd2');
+function fillB(){bd2.innerHTML=BU[sv2.value].map(x=>`<option>${x}</option>`).join('')}
+function setSv(v){sv2.value=v;fillB()}
+sv2.onchange=fillB;fillB();
+document.querySelectorAll('[data-svc]').forEach(a=>a.addEventListener('click',()=>setSv({'Long Term':'3-Month Retainer','Short Term':'Short-term Campaign','End-to-End':'End-to-End'}[a.dataset.svc])));
+document.getElementById('lead').onsubmit=async e=>{e.preventDefault();const b=document.getElementById('sb2'),m=document.getElementById('msg2');b.disabled=true;b.textContent='Sending...';
+ try{const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});const j=await r.json();
+ m.textContent=j.ok?'✅ Received! We will reply within 24 hours.':'⚠️ '+j.error;m.style.color=j.ok?'#4ade80':'#f87171';if(j.ok){e.target.reset();fillB()}}
+ catch{m.textContent='⚠️ Network error. Try again.';m.style.color='#f87171'}b.disabled=false;b.textContent='Submit Inquiry →'};
+
+(function(){
+ const g=document.createElement('div');g.id='glow';document.body.appendChild(g);
+ const b=document.createElement('div');b.id='bar';document.body.appendChild(b);
+ addEventListener('mousemove',e=>{g.style.left=e.clientX+'px';g.style.top=e.clientY+'px'});
+ addEventListener('scroll',()=>{b.style.width=(scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%'});
+ function tilt(el){
+  el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+   el.style.transition='transform .1s';el.style.transform=`perspective(800px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-6px)`});
+  el.addEventListener('mouseleave',()=>{el.style.transition='';el.style.transform=''})}
+ document.querySelectorAll('.card,.pc').forEach(tilt);
+ new MutationObserver(()=>document.querySelectorAll('.pc:not([data-t])').forEach(e=>{e.dataset.t=1;tilt(e)})).observe(document.getElementById('pg'),{childList:true});
+ const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15});
+ document.querySelectorAll('.rev').forEach(e=>io2.observe(e));
+})();
+
+(function(){
+const nice=f=>f.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ');
+let CLIPS=['Your clip title 1','Your clip title 2','Your clip title 3','Your clip title 4','Your clip title 5','Your clip title 6'].map(t=>({t,src:''}));
+// ---- floating platform icons in the hero ----
+const IC={
+tt:'<svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#000"/><path d="M26 11v17a5 5 0 1 1-5-5M26 11c1 4 4 7 8 7" stroke="#25f4ee" stroke-width="3.5" fill="none" transform="translate(-1.5 -1)"/><path d="M26 11v17a5 5 0 1 1-5-5M26 11c1 4 4 7 8 7" stroke="#fe2c55" stroke-width="3.5" fill="none" transform="translate(1.5 1)"/><path d="M26 11v17a5 5 0 1 1-5-5M26 11c1 4 4 7 8 7" stroke="#fff" stroke-width="3.5" fill="none"/></svg>',
+yt:'<svg viewBox="0 0 48 48"><rect x="3" y="11" width="42" height="26" rx="8" fill="#f00"/><path d="M20 17l11 7-11 7z" fill="#fff"/></svg>',
+ig:'<svg viewBox="0 0 48 48"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#fd5"/><stop offset=".5" stop-color="#ff543e"/><stop offset="1" stop-color="#c837ab"/></linearGradient></defs><rect x="4" y="4" width="40" height="40" rx="12" fill="url(#igg)"/><circle cx="24" cy="24" r="9" stroke="#fff" stroke-width="3.5" fill="none"/><circle cx="35" cy="13" r="2.5" fill="#fff"/></svg>',
+fb:'<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="#1877f2"/><path d="M26.5 40V27h4.3l.7-5h-5v-3.1c0-1.4.5-2.4 2.500-2.400H31.700V12c-.4-.1-2-.2-3.700-.2-3.700 0-6.200 2.200-6.200 6.400V22h-4.200v5h4.200v13z" fill="#fff"/></svg>'};
+const home=document.getElementById('home');
+[['tt','left:9%;top:30%',0],['yt','right:10%;top:27%',1],['ig','left:15%;bottom:13%',2],['fb','right:17%;bottom:16%',3]].forEach(a=>{const d=document.createElement('div');d.className='pt';d.style.cssText=a[1]+';animation-delay:'+a[2]+'s';d.innerHTML=IC[a[0]];home.appendChild(d)});
+// ---- play videos only while visible ----
+const vo=new IntersectionObserver(es=>es.forEach(e=>{e.isIntersecting?e.target.play().catch(()=>{}):e.target.pause()}),{threshold:.3});
+function watch(){document.querySelectorAll('.ph2 video').forEach(v=>{if(!v.dataset.o){v.dataset.o=1;vo.observe(v)}})}
+// ---- distribution diagram ----
+const POS=[[50,6],[70,12],[58,38],[80,42],[48,66],[74,70]];
+function buildDist(){const dg=document.getElementById('dg'),sv=document.getElementById('dsv');dg.querySelectorAll('.ph2').forEach(e=>e.remove());sv.innerHTML='';
+ POS.forEach((p,i)=>{const c=CLIPS[i%CLIPS.length],d=document.createElement('div');d.className='ph2';d.style.cssText=`left:${p[0]}%;top:${p[1]}%;animation-delay:${i*.7}s`;
+  d.innerHTML=(c.src?`<video src="${c.src}" muted loop playsinline preload="metadata"></video>`:'')+`<b>${c.t}</b>`;dg.appendChild(d);
+  sv.insertAdjacentHTML('beforeend',`<path d="M 16 50 C 30 50, ${p[0]-12} ${p[1]+17}, ${p[0]} ${p[1]+17}"/>`)});watch()}
+const W=['reach?','leads?','conversions?'],rw=document.getElementById('rw');let wi=0;
+setInterval(()=>{rw.style.opacity=0;setTimeout(()=>{wi=(wi+1)%3;rw.textContent=W[wi];rw.style.opacity=1},400)},2600);
+const fl=document.querySelectorAll('#flow span');let fi=0;setInterval(()=>{fl.forEach((s,i)=>s.classList.toggle('on',i==fi));fi=(fi+1)%3},900);
+// ---- reels carousel (reads your videos from static/clips automatically) ----
+const car=document.getElementById('car');let cx=0,carIn=false;
+function buildCar(){car.querySelectorAll('.cc').forEach(e=>e.remove());cx=Math.floor(CLIPS.length/2);
+ CLIPS.forEach((c,i)=>{const d=document.createElement('div');d.className='cc';d.innerHTML=(c.src?`<video src="${c.src}" muted loop playsinline preload="metadata" data-o="1"></video>`:'')+`<b>${c.t}</b>`;d.onclick=()=>{cx=i;pos()};car.appendChild(d)});pos()}
+function pos(){car.querySelectorAll('.cc').forEach((e,i)=>{const o=i-cx,a=Math.abs(o);
+ e.style.transform=`translateX(${o*190}px) translateZ(${-a*90}px) rotateY(${-o*16}deg)`;e.style.opacity=a>3?0:1-a*.2;e.style.zIndex=10-a;e.style.pointerEvents=a>3?'none':'auto';
+ const v=e.querySelector('video');if(v){(a==0&&carIn)?v.play().catch(()=>{}):v.pause()}})}
+function mv(n){cx=(cx+n+CLIPS.length)%CLIPS.length;pos()}
+document.getElementById('pv').onclick=()=>mv(-1);document.getElementById('nx').onclick=()=>mv(1);
+new IntersectionObserver(es=>{carIn=es[0].isIntersecting;pos()},{threshold:.3}).observe(car);
+setInterval(()=>{if(carIn&&!car.matches(':hover'))mv(1)},4500);
+// ---- 4-step process with Next Step button ----
+const ST=[
+{i:'✂️',n:'01. Clipping',b:'STEP 01 · CUT & EDIT',h:'Clipping',t:'Turn long videos into short, scroll-stopping clips.',d:'We find the strongest moments, trim the silence, add bold captions and hooks, and format every clip vertical for mobile.',l:['Best moments picked by our team','Captions, hooks and sound added'],g:'Ready-to-post clips from every video'},
+{i:'📡',n:'02. Distribution',b:'STEP 02 · POST AT SCALE',h:'Distribution',t:'Your clips go live everywhere at once.',d:'Clips are posted daily across our page network on YouTube Shorts, Instagram, TikTok and Facebook, starting with 10 pages per platform.',l:['Fan pages and theme pages in your niche','Different hooks tested across pages'],g:'Daily posting across 4 platforms'},
+{i:'👥',n:'03. Management',b:'STEP 03 · DONE FOR YOU',h:'Management',t:'We handle the work behind the scenes.',d:'We brief editors, check quality and manage posting, so you never chase freelancers or run spreadsheets.',l:['Every clip reviewed before it goes live','You keep full ownership of your content'],g:'A fully managed workflow'},
+{i:'📈',n:'04. Tracking',b:'STEP 04 · MEASURE & SCALE',h:'Tracking',t:'See what works and push it harder.',d:'Each week you get a clear report of views by page and platform, which clips won, and what we will do next.',l:['Weekly report with views per page','More volume behind the winners'],g:'A report every week'}];
+let si=0,hov=false;
+function drawStep(){const o=document.getElementById('orb');o.querySelectorAll('.nd').forEach(e=>e.remove());
+ ST.forEach((s,i)=>{const a=(-90+i*90)*Math.PI/180,n=document.createElement('div');n.className='nd'+(i==si?' on':'');n.style.left=50+50*Math.cos(a)+'%';n.style.top=50+50*Math.sin(a)+'%';n.innerHTML=s.i+`<small>${s.n}</small>`;n.onclick=()=>{si=i;drawStep()};o.appendChild(n)});
+ const s=ST[si],c=document.getElementById('sc');c.style.animation='none';c.offsetHeight;c.style.animation='';
+ c.innerHTML=`<span class="bd">${s.b}</span><h3>${s.h}</h3><h4>${s.t}</h4><p>${s.d}</p><ul>${s.l.map(x=>`<li>${x}</li>`).join('')}</ul><div class="ft"><div><small style="font:11px monospace;color:var(--mut)">WHAT YOU GET</small><br><b>${s.g}</b></div><button class="btn" id="nxs">Next Step →</button></div>`;
+ document.getElementById('nxs').onclick=()=>{si=(si+1)%4;drawStep()}}
+document.querySelector('.pro').addEventListener('mouseenter',()=>hov=true);document.querySelector('.pro').addEventListener('mouseleave',()=>hov=false);
+setInterval(()=>{if(!hov){si=(si+1)%4;drawStep()}},6000);
+// ---- start: placeholders first, then real videos from static/clips ----
+function all(){buildDist();buildCar()}
+drawStep();all();
+fetch('/api/clips').then(r=>r.json()).then(j=>{if(j.clips&&j.clips.length){CLIPS=j.clips.map(f=>({t:nice(f),src:'/static/clips/'+encodeURIComponent(f)}));all()}}).catch(()=>{});
+})();
+
+</script></body></html>

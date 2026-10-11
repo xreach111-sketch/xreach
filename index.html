@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>X Reach | Clipping & Distribution Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05060d;--fg:#f4f1ea;--mut:#8b90a7;--acc:#3b5bff;--acc2:#8a5bff;--card:#0e1020;--bd:#22264a}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+canvas#bg{position:fixed;inset:0;z-index:-1}
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;display:flex;gap:4px;padding:6px;background:#000c;backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:99px}
+nav a{color:var(--fg);text-decoration:none;padding:9px 16px;border-radius:99px;font-size:14px;transition:.3s}
+nav a:hover,nav a.on{background:var(--fg);color:#000}
+section{min-height:100vh;padding:120px 6vw 60px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.tag{font:12px monospace;letter-spacing:.2em;color:var(--acc);margin-bottom:18px}
+h1{font-size:clamp(70px,16vw,220px);line-height:.9;letter-spacing:-.04em;background:linear-gradient(90deg,#fff,var(--acc),var(--acc2),#fff);background-size:300%;-webkit-background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes flow{to{background-position:300%}}
+h2{font-size:clamp(34px,6vw,76px);letter-spacing:-.03em;margin-bottom:16px}h2 span{color:#8fa2ff}
+p.lead{color:var(--mut);max-width:680px;font-size:19px;line-height:1.6;margin:18px 0 30px}
+.btn{background:var(--fg);color:#000;border:0;padding:16px 30px;border-radius:99px;font:600 16px 'Space Grotesk';cursor:pointer;text-decoration:none;display:inline-block;transition:.3s;position:relative;overflow:hidden}
+.btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 40px #3b5bff88}
+.float{position:absolute;font-size:40px;animation:fl 5s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-26px) rotate(8deg)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;width:100%;max-width:1100px;margin-top:30px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:30px;text-align:left;transition:.4s}
+.card:hover{transform:translateY(-8px);border-color:var(--acc);box-shadow:0 20px 60px #3b5bff33}
+.card h3{font-size:24px;margin:10px 0}.card p{color:var(--mut);line-height:1.6}
+.num{font-size:clamp(44px,6vw,80px);font-weight:700}.stat{text-align:center}.stat small{color:var(--mut);letter-spacing:.15em;font-size:12px}
+.marq{overflow:hidden;width:100%;margin:30px 0}.marq div{display:flex;gap:16px;width:max-content;animation:m 25s linear infinite}
+.marq span{border:1px solid var(--bd);background:var(--card);padding:18px 32px;border-radius:18px;white-space:nowrap}
+@keyframes m{to{transform:translateX(-50%)}}
+.rev{opacity:0;transform:translateY(50px);transition:1s}.rev.in{opacity:1;transform:none}
+.steps{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.step{flex:1 1 200px;max-width:250px;padding:24px;border-radius:20px;background:var(--card);border:1px solid var(--bd);cursor:pointer;transition:.3s}
+.step.on{background:var(--acc);transform:scale(1.05)}.step b{font-size:34px;display:block}
+form{background:var(--card);border:1px solid var(--bd);padding:34px;border-radius:26px;width:100%;max-width:720px;text-align:left;display:grid;gap:14px}
+label{font:12px monospace;letter-spacing:.12em;color:var(--mut)}
+input,select,textarea{width:100%;background:#080a16;border:1px solid var(--bd);color:var(--fg);padding:15px;border-radius:14px;font:16px 'Space Grotesk';margin-top:6px;outline:0;transition:.3s}
+input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 4px #3b5bff33}
+#msg{text-align:center;font-weight:600}
+#cb{position:fixed;right:22px;bottom:22px;z-index:60}
+#cbtn{width:62px;height:62px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;font-size:28px;cursor:pointer;animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 16px #3b5bff22}}
+#cw{display:none;width:340px;max-width:92vw;height:460px;background:var(--card);border:1px solid var(--bd);border-radius:22px;margin-bottom:12px;flex-direction:column;overflow:hidden}
+#cm{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.m{padding:10px 14px;border-radius:14px;max-width:85%;font-size:14px;line-height:1.5}.u{background:var(--acc);align-self:flex-end}.a{background:#1a1d38}
+#cf{display:flex;border-top:1px solid var(--bd)}#cf input{border:0;border-radius:0;margin:0}
+footer{text-align:center;color:var(--mut);padding:40px}
+</style></head><body>
+<canvas id="bg"></canvas>
+<nav><a href="#home" class="on">Home</a><a href="#results">Results</a><a href="#how">How it works</a><a href="#services">Services</a><a href="#why">Why X Reach</a><a href="#contact">Contact</a></nav>
+
+<section id="home">
+<span class="float" style="left:10%;top:28%">🎬</span><span class="float" style="right:12%;top:34%;animation-delay:1s">📈</span><span class="float" style="left:16%;bottom:16%;animation-delay:2s">🔥</span><span class="float" style="right:18%;bottom:20%;animation-delay:3s">🚀</span>
+<div class="tag">( 01 ) DISTRIBUTION ENGINE</div>
+<h1>X Reach</h1>
+<p class="lead">We cut short-form clips from your long-form content and post them daily across hundreds of pages on YouTube Shorts, Instagram, TikTok and Facebook. Lifetime marketing, not rented ads.</p>
+<a href="#contact" class="btn">Book a Strategy Call →</a>
+</section>
+
+<section id="results">
+<div class="tag rev">( 02 ) SCALE</div>
+<h2 class="rev">Built to make you <span>go viral</span></h2>
+<div class="grid">
+<div class="stat rev"><div class="num" data-n="10" data-s="+">0</div><small>PAGES PER PLATFORM TO START</small></div>
+<div class="stat rev"><div class="num" data-n="4">0</div><small>PLATFORMS</small></div>
+<div class="stat rev"><div class="num" data-n="2">0</div><small>POSTS / PAGE / DAY</small></div>
+<div class="stat rev"><div class="num" data-n="50" data-s="+">0</div><small>CLIPPERS ON TEAM</small></div>
+</div>
+<div class="marq"><div><span>▶ YouTube Shorts</span><span>📸 Instagram Reels</span><span>🎵 TikTok</span><span>📘 Facebook Reels</span><span>▶ YouTube Shorts</span><span>📸 Instagram Reels</span><span>🎵 TikTok</span><span>📘 Facebook Reels</span></div></div>
+</section>
+
+<section id="how">
+<div class="tag">( 03 ) HOW WE WORK</div>
+<h2 class="rev">Four steps. <span>Zero hassle.</span></h2>
+<div class="steps" id="steps"></div>
+<p class="lead" id="sd"></p>
+</section>
+
+<section id="services">
+<div class="tag">( 04 ) SERVICES</div>
+<h2 class="rev">Pick how you want to <span>grow</span></h2>
+<div class="grid">
+<div class="card rev"><div class="tag">CONTINUOUS GROWTH</div><h3>Long Term</h3><p>3-month plan with performance testing that moves into a retainer, plus steady daily clipping across all pages.</p><br><a class="btn" href="#contact" data-svc="Long Term">Get this →</a></div>
+<div class="card rev"><div class="tag">HIGH-IMPACT SPRINT</div><h3>Short Term</h3><p>25-30 days of PR campaign and mass clipping to create an immediate surge across mega and theme pages.</p><br><a class="btn" href="#contact" data-svc="Short Term">Get this →</a></div>
+<div class="card rev"><div class="tag">FULL-STACK</div><h3>End-to-End</h3><p>We make the content and distribute it. Everything handled for you from start to finish.</p><br><a class="btn" href="#contact" data-svc="End-to-End">Get this →</a></div>
+</div>
+</section>
+
+<section id="why">
+<div class="tag">( 05 ) THE UNFAIR ADVANTAGE</div>
+<h2 class="rev">Why creators <span>choose us</span></h2>
+<div class="grid">
+<div class="card rev"><h3>🌐 Scale of pages</h3><p>Not 1 page. Dozens of pages on 4 platforms, so your content shows up everywhere your audience scrolls.</p></div>
+<div class="card rev"><h3>💸 Beats paid ads</h3><p>Ads stop when the budget stops. Clips stay online and keep bringing new audience for years.</p></div>
+<div class="card rev"><h3>🎯 Right audience</h3><p>We pick pages and niches that match your viewers, so reach turns into followers and leads.</p></div>
+<div class="card rev"><h3>📊 Tracked results</h3><p>You see what is posted and how it performs. You stay in control of your content.</p></div>
+</div>
+</section>
+
+<section id="contact">
+<div class="tag">( 06 ) LET'S TALK</div>
+<h2 class="rev">Start your <span>campaign</span></h2>
+<form id="f">
+<div><label>NAME *</label><input name="name" required></div>
+<div><label>EMAIL *</label><input name="email" type="email" required></div>
+<div><label>WHATSAPP / PHONE</label><input name="phone"></div>
+<div><label>CHANNEL / WEBSITE / INSTAGRAM LINK *</label><input name="links" required></div>
+<div><label>SERVICE</label><select name="service" id="svc"><option>Long Term</option><option>Short Term</option><option>End-to-End</option><option>Not sure</option></select></div>
+<div><label>MONTHLY BUDGET</label><select name="budget"><option>Under ₹20k</option><option>₹20k - ₹50k</option><option>₹50k - ₹1.5L</option><option>₹1.5L+</option></select></div>
+<div><label>TELL US YOUR GOAL</label><textarea name="goal" rows="3"></textarea></div>
+<button class="btn" type="submit" id="sb">Send Request →</button><div id="msg"></div>
+</form>
+</section>
+<footer>© 2026 X Reach. India's clipping and distribution agency.</footer>
+
+<div id="cb"><div id="cw"><div id="cm"><div class="m a">Hi! I'm the X Reach assistant. Ask me anything about clipping, pricing or how we work.</div></div>
+<div id="cf"><input id="ci" placeholder="Type your question..."><button class="btn" id="cs" style="border-radius:0">Send</button></div></div>
+<button id="cbtn">💬</button></div>
+
+<script>
+// animated particle background
+const c=document.getElementById('bg'),x=c.getContext('2d');let P=[];
+function rs(){c.width=innerWidth;c.height=innerHeight}rs();onresize=rs;
+for(let i=0;i<90;i++)P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5});
+let mx=-999,my=-999;onmousemove=e=>{mx=e.clientX;my=e.clientY};
+(function d(){x.clearRect(0,0,c.width,c.height);
+P.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;
+x.fillStyle='#6f86ff';x.fillRect(p.x,p.y,2,2);
+for(let j=i+1;j<P.length;j++){let q=P[j],dd=Math.hypot(p.x-q.x,p.y-q.y);if(dd<110){x.strokeStyle=`rgba(90,110,255,${.25-dd/500})`;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke()}}
+let m=Math.hypot(p.x-mx,p.y-my);if(m<150){x.strokeStyle='rgba(138,91,255,.5)';x.beginPath();x.moveTo(p.x,p.y);x.lineTo(mx,my);x.stroke()}});
+requestAnimationFrame(d)})();
+// scroll reveal + counters + nav highlight
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');const n=e.target.querySelector?.('.num');if(n&&!n.d){n.d=1;const t=+n.dataset.n;let v=0;const iv=setInterval(()=>{v+=Math.ceil(t/40);if(v>=t){v=t;clearInterval(iv)}n.textContent=v+(n.dataset.s||'')},35)}}}),{threshold:.2});
+document.querySelectorAll('.rev').forEach(e=>io.observe(e));
+const links=[...document.querySelectorAll('nav a')];
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+e.target.id))}),{threshold:.5}).observe&&document.querySelectorAll('section').forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+s.id))}),{threshold:.5}).observe(s));
+// steps
+const S=[["Clipping","We find your best moments, cut dead silence, add bold captions and format 9:16 so every clip hooks in 3 seconds."],["Distribution","Clips go live daily on 10+ pages per platform across YouTube, Instagram, TikTok and Facebook, scaling up over time."],["Management","Our team of clippers and page managers handle posting, timing, titles and quality. You do nothing."],["Tracking","You get clear reports on views, followers gained and which clips work, so we double down on winners."]];
+const st=document.getElementById('steps'),sd=document.getElementById('sd');let cur=0;
+S.forEach((s,i)=>{const d=document.createElement('div');d.className='step';d.innerHTML=`<b>0${i+1}</b>${s[0]}`;d.onclick=()=>pick(i);st.appendChild(d)});
+function pick(i){cur=i;[...st.children].forEach((e,j)=>e.classList.toggle('on',j==i));sd.textContent=S[i][1]}pick(0);
+setInterval(()=>{if(!st.matches(':hover'))pick((cur+1)%4)},4000);
+// service buttons prefill form
+document.querySelectorAll('[data-svc]').forEach(a=>a.onclick=()=>{document.getElementById('svc').value=a.dataset.svc});
+// lead form
+document.getElementById('f').onsubmit=async e=>{e.preventDefault();const b=document.getElementById('sb'),m=document.getElementById('msg');b.disabled=true;b.textContent='Sending...';
+try{const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});const j=await r.json();
+m.textContent=j.ok?'✅ Received! We will email you shortly with how we will work together.':'⚠️ '+j.error;m.style.color=j.ok?'#4ade80':'#f87171';if(j.ok)e.target.reset()}
+catch{m.textContent='⚠️ Network error. Try again.'}b.disabled=false;b.textContent='Send Request →'};
+// chatbot
+const cw=document.getElementById('cw'),cm=document.getElementById('cm'),ci=document.getElementById('ci');let H=[];
+document.getElementById('cbtn').onclick=()=>cw.style.display=cw.style.display=='flex'?'none':'flex';
+function add(t,k){const d=document.createElement('div');d.className='m '+k;d.textContent=t;cm.appendChild(d);cm.scrollTop=cm.scrollHeight;return d}
+async function send(){const t=ci.value.trim();if(!t)return;ci.value='';add(t,'u');H.push({role:'user',content:t});const w=add('...','a');
+try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:H})});const j=await r.json();w.textContent=j.reply;H.push({role:'assistant',content:j.reply})}catch{w.textContent='Connection issue, please try again.'}}
+document.getElementById('cs').onclick=send;ci.onkeydown=e=>{if(e.key=='Enter')send()};
+</script></body></html>
+the search text
