@@ -1,6 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>X Reach | Clipping & Distribution Agency</title>
+<link rel="icon" href="/static/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#05060d;--fg:#f4f1ea;--mut:#8b90a7;--acc:#3b5bff;--acc2:#8a5bff;--card:#0e1020;--bd:#22264a}
@@ -12,7 +13,7 @@ nav a{color:var(--fg);text-decoration:none;padding:9px 16px;border-radius:99px;f
 nav a:hover,nav a.on{background:var(--fg);color:#000}
 section{min-height:100vh;padding:120px 6vw 60px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
 .tag{font:12px monospace;letter-spacing:.2em;color:var(--acc);margin-bottom:18px}
-h1{font-size:clamp(70px,16vw,220px);line-height:.9;letter-spacing:-.04em;background:linear-gradient(90deg,#fff,var(--acc),var(--acc2),#fff);background-size:300%;-webkit-background-clip:text;color:transparent;animation:flow 6s linear infinite}
+h1{font-size:clamp(70px,16vw,220px);line-height:.9;letter-spacing:-.04em;background:linear-gradient(90deg,#fff,var(--acc),var(--acc2),#fff);background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
 @keyframes flow{to{background-position:300%}}
 h2{font-size:clamp(34px,6vw,76px);letter-spacing:-.03em;margin-bottom:16px}h2 span{color:#8fa2ff}
 p.lead{color:var(--mut);max-width:680px;font-size:19px;line-height:1.6;margin:18px 0 30px}
@@ -71,7 +72,7 @@ body{background:#000}
 body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(0deg,#ffffff07 0 1px,transparent 1px 4px)}
 #glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:-1;background:radial-gradient(#2f6bff33,transparent 65%);transform:translate(-50%,-50%)}
 #bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:99;background:linear-gradient(90deg,var(--acc),var(--acc2))}
-h2 span{background:linear-gradient(90deg,#7aa2ff,#00d4ff);-webkit-background-clip:text;color:transparent}
+h2 span{background:linear-gradient(90deg,#7aa2ff,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .tag{color:var(--acc2);text-shadow:0 0 12px #00d4ff88}
 .card,.pc,.step,form{background:linear-gradient(160deg,#0b1020,#04060e);box-shadow:inset 0 0 0 1px #ffffff08}
 .card:hover,.pc:hover{box-shadow:0 0 0 1px var(--acc),0 20px 70px #2f6bff44}
@@ -114,7 +115,34 @@ details:hover{border-color:var(--acc)}summary{cursor:pointer;font-weight:600;fon
 .sc .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bd);padding-top:16px;gap:12px;flex-wrap:wrap}
 @media(max-width:800px){.dgw,.pro{grid-template-columns:1fr}.dg{height:480px}.pt{width:56px;height:56px}.pt svg{width:32px;height:32px}}
 
+.brand{position:fixed;top:14px;left:22px;z-index:60;display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:700;font-size:18px}
+.brand img{width:46px;height:46px;border-radius:50%;object-fit:cover;box-shadow:0 0 24px #2f6bff88;background:#000}
+@media(max-width:1000px){.brand span{display:none}}
+h1{font-size:clamp(60px,12vw,170px)}
+.hs{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:26px 0 6px}
+.hb{min-width:240px;padding:18px 28px;border:1px solid var(--bd);border-radius:22px;background:linear-gradient(160deg,#0b1020cc,#04060ecc);backdrop-filter:blur(8px);box-shadow:0 0 40px #2f6bff33}
+.hn{font-size:clamp(40px,6vw,76px);font-weight:700;line-height:1;background:linear-gradient(90deg,#fff,#7aa2ff,#00d4ff);-webkit-background-clip:text;color:transparent}
+.hb small{display:block;margin-top:8px;font:11px monospace;letter-spacing:.14em;color:var(--mut)}
+.hl{font-size:clamp(18px,2.2vw,26px);max-width:820px;margin:18px auto 0;line-height:1.4}.hl b{color:#8fa2ff}
+.hw{color:var(--mut);font-size:14px;margin:10px 0 24px}.hw a{color:var(--acc2)}
+#pop{position:absolute;right:76px;bottom:6px;width:230px;background:#fff;color:#000;border-radius:16px 16px 4px 16px;padding:12px 14px;font-size:14px;line-height:1.4;box-shadow:0 10px 40px #0008;animation:up .5s;cursor:pointer}
+#pop i{position:absolute;top:2px;right:8px;font-style:normal;color:#666}
+.ch{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px}.ch button{background:#1a1d38;color:#fff;border:1px solid var(--bd);border-radius:99px;padding:6px 12px;font-size:12px;cursor:pointer}.ch button:hover{background:var(--acc)}
+.ah{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--bd);font-weight:700}.ah:before{content:"";width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80}.ah small{margin-left:auto;color:var(--mut);font-weight:400}
+.mq{position:relative;width:100vw;height:470px;overflow:hidden;margin-top:20px;touch-action:pan-y;cursor:grab;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mt{position:absolute;left:0;top:10px;display:flex;gap:20px;will-change:transform}
+.mc{position:relative;flex:none;width:230px;height:420px;border-radius:26px;border:1px solid var(--bd);background:linear-gradient(160deg,#1f2350,#090a16);overflow:hidden;display:flex;align-items:flex-end;padding:18px;text-align:left;box-shadow:0 10px 40px #0008}
+.mc video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.mc b{position:relative;font-size:15px;text-shadow:0 1px 8px #000}
+#cw{width:370px;height:520px;background:rgba(7,11,26,.88);backdrop-filter:blur(16px);border:1px solid #2f6bff99;border-radius:24px;box-shadow:0 0 0 1px #00d4ff22,0 0 70px #2f6bff66;animation:pw .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pw{from{opacity:0;transform:translateY(30px) scale(.9)}}
+.ah{background:linear-gradient(90deg,#0d1b4d,#06101f);font-size:17px}.ah img{width:32px;height:32px;border-radius:50%;box-shadow:0 0 14px #00d4ff}
+.m.a{background:#0f1738;border:1px solid #22307a;border-radius:14px 14px 14px 4px;animation:up .3s}.m.u{background:linear-gradient(135deg,#2f6bff,#8a5bff);border-radius:14px 14px 4px 14px;animation:up .3s}
+.m.typing{opacity:.65;animation:blink 1s infinite}@keyframes blink{50%{opacity:.25}}
+#cf input{background:#060a18;color:#fff}
+#pop{animation:slin .6s cubic-bezier(.2,.9,.3,1.1);background:linear-gradient(135deg,#fff,#dfe9ff);box-shadow:0 0 40px #2f6bff88}
+@keyframes slin{from{transform:translateX(140%);opacity:0}}
 </style></head><body>
+<a class="brand" href="#home"><img src="/static/logo.png" alt="X Reach" onerror="this.style.display='none'"><span>X Reach</span></a>
 <canvas id="bg"></canvas>
 <nav><a href="#home" class="on">Home</a><a href="#results">Results</a><a href="#how">How it works</a><a href="#services">Services</a><a href="#why">Why X Reach</a><a href="#contact">Contact</a></nav>
 
@@ -122,6 +150,9 @@ details:hover{border-color:var(--acc)}summary{cursor:pointer;font-weight:600;fon
 <span class="float" style="left:10%;top:28%">🎬</span><span class="float" style="right:12%;top:34%;animation-delay:1s">📈</span><span class="float" style="left:16%;bottom:16%;animation-delay:2s">🔥</span><span class="float" style="right:18%;bottom:20%;animation-delay:3s">🚀</span>
 <div class="tag">( 01 ) DISTRIBUTION ENGINE</div>
 <h1>X Reach</h1>
+<div class="hs"><div class="hb"><div class="hn"><span data-m="total">0</span>M+</div><small>VIEWS GENERATED FOR OUR CLIENTS</small></div><div class="hb"><div class="hn"><span data-m="single">0</span>M+</div><small>VIEWS FROM A SINGLE PODCAST CLIENT</small></div></div>
+<p class="hl">From <b>one podcast</b> to <b><span data-s="single"></span> million views</b>, and <b><span data-s="total"></span> million</b> across all our clients, with clipping alone.</p>
+<p class="hw">Clips posted daily across hundreds of pages. Organic reach, no rented ads. <a href="#process">See how we do it &rarr;</a></p>
 <p class="lead">We cut short-form clips from your long-form content and post them daily across hundreds of pages on YouTube Shorts, Instagram, TikTok and Facebook. Lifetime marketing, not rented ads.</p>
 <a href="#contact" class="btn">Book a Strategy Call →</a>
 </section>
@@ -226,7 +257,7 @@ details:hover{border-color:var(--acc)}summary{cursor:pointer;font-weight:600;fon
 <div class="tag">( 07 ) REAL CLIPS</div>
 <h2 class="rev">Real reels. <span>Real reach.</span></h2>
 <p class="lead">A look at the kind of short-form clips we cut and post for creators and founders.</p>
-<div class="car" id="car"><button class="ar" id="pv" style="left:0">←</button><button class="ar" id="nx" style="right:0">→</button></div>
+<div class="mq" id="car"><div class="mt" id="mt"></div><button class="ar" id="pv" style="left:14px">←</button><button class="ar" id="nx" style="right:14px">→</button></div>
 </section>
 
 
@@ -268,7 +299,8 @@ details:hover{border-color:var(--acc)}summary{cursor:pointer;font-weight:600;fon
 
 <footer>© 2026 X Reach. India's clipping and distribution agency.</footer>
 
-<div id="cb"><div id="cw"><div id="cm"><div class="m a">Hi! I'm the X Reach assistant. Ask me anything about clipping, pricing or how we work.</div></div>
+<div id="cb"><div id="cw"><div class="ah"><img src="/static/logo.png" alt="" onerror="this.style.display='none'">Agent X<small>online · X Reach AI</small></div><div id="cm"><div class="m a">Hi! I'm Agent X, the X Reach AI assistant. Ask me about our services, pricing, results or how we work.</div></div>
+<div class="ch" id="ch"><button data-q="What are your prices?">Pricing</button><button data-q="How does it work?">How it works</button><button data-q="What results have you got?">Results</button><button data-q="Your price seems too high for me">Too expensive?</button><button data-q="How do I book a call?">Book a call</button></div>
 <div id="cf"><input id="ci" placeholder="Type your question..."><button class="btn" id="cs" style="border-radius:0">Send</button></div></div>
 <button id="cbtn">💬</button></div>
 
@@ -306,7 +338,7 @@ catch{m.textContent='⚠️ Network error. Try again.'}b.disabled=false;b.textCo
 const cw=document.getElementById('cw'),cm=document.getElementById('cm'),ci=document.getElementById('ci');let H=[];
 document.getElementById('cbtn').onclick=()=>cw.style.display=cw.style.display=='flex'?'none':'flex';
 function add(t,k){const d=document.createElement('div');d.className='m '+k;d.textContent=t;cm.appendChild(d);cm.scrollTop=cm.scrollHeight;return d}
-async function send(){const t=ci.value.trim();if(!t)return;ci.value='';add(t,'u');H.push({role:'user',content:t});const w=add('...','a');
+async function send(){const t=ci.value.trim();if(!t)return;ci.value='';add(t,'u');H.push({role:'user',content:t});const w=add('Agent X is typing…','a typing');
 try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:H})});const j=await r.json();w.textContent=j.reply;H.push({role:'assistant',content:j.reply})}catch{w.textContent='Connection issue, please try again.'}}
 document.getElementById('cs').onclick=send;ci.onkeydown=e=>{if(e.key=='Enter')send()};
 // ---- point old "Contact" links to the new form + add Pricing to menu ----
@@ -393,17 +425,18 @@ function buildDist(){const dg=document.getElementById('dg'),sv=document.getEleme
 const W=['reach?','leads?','conversions?'],rw=document.getElementById('rw');let wi=0;
 setInterval(()=>{rw.style.opacity=0;setTimeout(()=>{wi=(wi+1)%3;rw.textContent=W[wi];rw.style.opacity=1},400)},2600);
 const fl=document.querySelectorAll('#flow span');let fi=0;setInterval(()=>{fl.forEach((s,i)=>s.classList.toggle('on',i==fi));fi=(fi+1)%3},900);
-// ---- reels carousel (reads your videos from static/clips automatically) ----
-const car=document.getElementById('car');let cx=0,carIn=false;
-function buildCar(){car.querySelectorAll('.cc').forEach(e=>e.remove());cx=Math.floor(CLIPS.length/2);
- CLIPS.forEach((c,i)=>{const d=document.createElement('div');d.className='cc';d.innerHTML=(c.src?`<video src="${c.src}" muted loop playsinline preload="metadata" data-o="1"></video>`:'')+`<b>${c.t}</b>`;d.onclick=()=>{cx=i;pos()};car.appendChild(d)});pos()}
-function pos(){car.querySelectorAll('.cc').forEach((e,i)=>{const o=i-cx,a=Math.abs(o);
- e.style.transform=`translateX(${o*190}px) translateZ(${-a*90}px) rotateY(${-o*16}deg)`;e.style.opacity=a>3?0:1-a*.2;e.style.zIndex=10-a;e.style.pointerEvents=a>3?'none':'auto';
- const v=e.querySelector('video');if(v){(a==0&&carIn)?v.play().catch(()=>{}):v.pause()}})}
-function mv(n){cx=(cx+n+CLIPS.length)%CLIPS.length;pos()}
-document.getElementById('pv').onclick=()=>mv(-1);document.getElementById('nx').onclick=()=>mv(1);
-new IntersectionObserver(es=>{carIn=es[0].isIntersecting;pos()},{threshold:.3}).observe(car);
-setInterval(()=>{if(carIn&&!car.matches(':hover'))mv(1)},4500);
+// ---- infinite reels strip (keeps scrolling left; arrows or drag nudge it) ----
+const car=document.getElementById('car'),mt=document.getElementById('mt');
+let X=0,V=-0.7,boost=0,drag=false,lx=0,SW=1;
+function buildCar(){mt.innerHTML='';const n=CLIPS.length,reps=Math.max(3,Math.ceil(innerWidth*2/(n*250))+1);
+ for(let r=0;r<reps;r++)CLIPS.forEach(c=>{const d=document.createElement('div');d.className='mc';d.innerHTML=(c.src?`<video src="${c.src}" muted loop playsinline preload="metadata"></video>`:'')+`<b>${c.t}</b>`;mt.appendChild(d)});
+ SW=n*250;mt.querySelectorAll('video').forEach(v=>{if(!v.dataset.o){v.dataset.o=1;vo.observe(v)}})}
+(function loop(){let sp=(car.matches(':hover')?V*.3:V)+boost;if(!drag){X+=sp;boost*=.94}
+ if(X<=-SW)X+=SW;if(X>0)X-=SW;mt.style.transform=`translateX(${X}px)`;requestAnimationFrame(loop)})();
+document.getElementById('pv').onclick=()=>{boost=16};document.getElementById('nx').onclick=()=>{boost=-16};
+car.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag=true;lx=e.clientX;car.setPointerCapture(e.pointerId)});
+car.addEventListener('pointermove',e=>{if(drag){X+=e.clientX-lx;lx=e.clientX}});
+['pointerup','pointercancel'].forEach(t=>car.addEventListener(t,()=>{drag=false}));
 // ---- 4-step process with Next Step button ----
 const ST=[
 {i:'✂️',n:'01. Clipping',b:'STEP 01 · CUT & EDIT',h:'Clipping',t:'Turn long videos into short, scroll-stopping clips.',d:'We find the strongest moments, trim the silence, add bold captions and hooks, and format every clip vertical for mobile.',l:['Best moments picked by our team','Captions, hooks and sound added'],g:'Ready-to-post clips from every video'},
@@ -424,4 +457,15 @@ drawStep();all();
 fetch('/api/clips').then(r=>r.json()).then(j=>{if(j.clips&&j.clips.length){CLIPS=j.clips.map(f=>({t:nice(f),src:'/static/clips/'+encodeURIComponent(f)}));all()}}).catch(()=>{});
 })();
 
+(function(){
+const STATS={total:200,single:50}; // EDIT HERE: use only numbers you can prove
+document.querySelectorAll('[data-s]').forEach(e=>e.textContent=STATS[e.dataset.s]);
+document.querySelectorAll('[data-m]').forEach(el=>{const t=STATS[el.dataset.m],st=Math.max(1,Math.ceil(t/60));let v=0;const iv=setInterval(()=>{v+=st;if(v>=t){v=t;clearInterval(iv)}el.textContent=v},30)});
+const cb=document.getElementById('cb'),cw=document.getElementById('cw'),btn=document.getElementById('cbtn');
+const pop=document.createElement('div');pop.id='pop';pop.innerHTML="<i>×</i>Hi, I'm <b>Agent X</b> 👋 Ask me about pricing, results or how we work.";
+setTimeout(()=>{if(cw.style.display!='flex')cb.appendChild(pop)},3500);
+pop.onclick=e=>{pop.remove();if(e.target.tagName!='I')btn.click()};
+btn.addEventListener('click',()=>pop.remove());
+document.querySelectorAll('#ch button').forEach(b=>b.onclick=()=>{document.getElementById('ci').value=b.dataset.q;document.getElementById('cs').click()});
+})();
 </script></body></html>
