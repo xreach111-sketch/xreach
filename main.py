@@ -51,15 +51,20 @@ If you do not know something, say so honestly and point to the form."""
 
 def ask_ai(msgs):
     if OPENROUTER_KEY:
-        r = requests.post("https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": "Bearer " + OPENROUTER_KEY, "Content-Type": "application/json",
-                     "HTTP-Referer": "https://xreach.vercel.app", "X-Title": "X Reach"},
-            json={"model": AI_MODEL, "max_tokens": 350, "temperature": 0.8,
-                  "messages": [{"role": "system", "content": SYSTEM}] + msgs}, timeout=30)
+        key = OPENROUTER_KEY.strip().strip('"').strip("'").strip()
+        models = [AI_MODEL, "openai/gpt-4o-mini", "google/gemini-2.0-flash-001"]
+        r = None
         try:
+            r = requests.post("https://openrouter.ai/api/v1/chat/completions",
+                headers={"Authorization": "Bearer " + key, "Content-Type": "application/json",
+                         "Accept": "application/json", "User-Agent": "xreach/1.0",
+                         "HTTP-Referer": "https://xreach.vercel.app", "X-Title": "X Reach"},
+                json={"model": models[0], "models": models, "max_tokens": 350, "temperature": 0.8,
+                      "messages": [{"role": "system", "content": SYSTEM}] + msgs}, timeout=9)
             return r.json()["choices"][0]["message"]["content"]
-        except Exception:
-            print("OPENROUTER ERROR", r.status_code, r.text[:300])
+        except Exception as e:
+            print("OPENROUTER ERROR", r.status_code if r is not None else "no response",
+                  (r.text[:300] if r is not None else ""), repr(e))
             raise
     r = requests.post("https://api.anthropic.com/v1/messages",
         headers={"x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json"},
