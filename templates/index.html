@@ -468,7 +468,97 @@ pop.onclick=e=>{pop.remove();if(e.target.tagName!='I')btn.click()};
 btn.addEventListener('click',()=>pop.remove());
 document.querySelectorAll('#ch button').forEach(b=>b.onclick=()=>{document.getElementById('ci').value=b.dataset.q;document.getElementById('cs').click()});
 })();
-</script><!-- XR-FX START -->
+</script><!-- XR-FX2 START -->
+<style>
+.xr-agent[data-xr2]{font-size:0!important}
+.xr-agent[data-xr2]>*:not(.xr-keep){display:none!important}
+.xr-agent[data-xr2] .xr-txt{font-size:13px!important}
+.xr-connect{position:relative;padding:64px 20px 72px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(124,92,255,.22),transparent 60%),#0a0a14;color:#f2f4ff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+.xr-connect h2{margin:0 0 8px;font-size:clamp(26px,5vw,40px);letter-spacing:-.01em;background:linear-gradient(90deg,#00e5ff,#7c5cff,#ff3d6e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.xr-connect p{margin:0 auto 30px;color:#aab0d4;max-width:480px}
+.xr-cbtns{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.xr-mailwrap{position:relative}
+.xr-cb{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#fff;font:600 15px/1 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none;cursor:pointer;transition:transform .25s,box-shadow .25s,background .25s}
+.xr-cb svg{width:22px;height:22px;flex:none}
+.xr-cb:hover,.xr-cb:focus-visible{transform:translateY(-4px) scale(1.04);outline:none}
+.xr-cb.ig:hover{background:linear-gradient(45deg,#f9a03f,#e1306c,#833ab4);box-shadow:0 10px 30px rgba(225,48,108,.45)}
+.xr-cb.li:hover{background:#0a66c2;box-shadow:0 10px 30px rgba(10,102,194,.5)}
+.xr-cb.ml:hover{background:linear-gradient(45deg,#00b8d9,#7c5cff);box-shadow:0 10px 30px rgba(0,229,255,.4)}
+.xr-menu{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%);min-width:230px;padding:8px;border-radius:14px;background:rgba(18,18,34,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.16);box-shadow:0 14px 44px rgba(0,0,0,.55);text-align:left;z-index:50}
+.xr-menu[hidden]{display:none}
+.xr-menu a,.xr-menu button{display:block;width:100%;padding:11px 14px;border:0;border-radius:9px;background:none;color:#e9ecff;font:500 14px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:left;text-decoration:none;cursor:pointer}
+.xr-menu a:hover,.xr-menu button:hover,.xr-menu a:focus-visible,.xr-menu button:focus-visible{background:rgba(124,92,255,.28);outline:none}
+.xr-menu hr{border:0;border-top:1px solid rgba(255,255,255,.12);margin:6px 4px}
+@media (prefers-reduced-motion:reduce){.xr-cb{transition:none}}
+</style>
+<section class="xr-connect" id="connect">
+  <h2>Let's connect</h2>
+  <p>Pick the way that suits you. Send us your channel link and we will reply with a plan.</p>
+  <div class="xr-cbtns">
+    <a class="xr-cb ig" href="https://www.instagram.com/x.reachh" target="_blank" rel="noopener noreferrer" aria-label="X Reach on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg><span>Instagram</span></a>
+    <a class="xr-cb li" href="https://www.linkedin.com/in/x-reach-2076b8426" target="_blank" rel="noopener noreferrer" aria-label="X Reach on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><rect x="3" y="9" width="4" height="12" rx="1"/><circle cx="5" cy="4.5" r="2.2"/><path d="M10 9h3.8v1.8c.6-1.1 2-2.1 4-2.1 3.6 0 4.2 2.4 4.2 5.4V21h-4v-5.8c0-1.4 0-3.2-2-3.2s-2.2 1.5-2.2 3.1V21H10z"/></svg><span>LinkedIn</span></a>
+    <div class="xr-mailwrap">
+      <button class="xr-cb ml" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Email X Reach"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Email us</span></button>
+      <div class="xr-menu" role="menu" hidden>
+        <a role="menuitem" href="https://mail.google.com/mail/?view=cm&fs=1&to=xreach111%40gmail.com&su=Enquiry%20for%20X%20Reach&body=Hi%20X%20Reach%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20clipping%20service.%0A%0AMy%20name%3A%20%0AMy%20channel%20link%3A%20%0A" target="_blank" rel="noopener noreferrer">Compose in Gmail</a>
+        <a role="menuitem" href="https://outlook.live.com/mail/0/deeplink/compose?to=xreach111%40gmail.com&subject=Enquiry%20for%20X%20Reach&body=Hi%20X%20Reach%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20clipping%20service.%0A%0AMy%20name%3A%20%0AMy%20channel%20link%3A%20%0A" target="_blank" rel="noopener noreferrer">Compose in Outlook</a>
+        <a role="menuitem" href="mailto:xreach111@gmail.com?subject=Enquiry%20for%20X%20Reach&body=Hi%20X%20Reach%2C%0A%0AI%20would%20like%20to%20know%20more%20about%20your%20clipping%20service.%0A%0AMy%20name%3A%20%0AMy%20channel%20link%3A%20%0A">Open default mail app</a>
+        <hr>
+        <button type="button" role="menuitem" class="xr-copy">Copy email address</button>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+"use strict";
+function q(s){return document.querySelector(s);}
+function setup(){
+  /* ===== Email menu ===== */
+  var mb=q(".xr-cb.ml"),menu=q(".xr-menu"),cp=q(".xr-copy");
+  if(mb&&menu){
+    var closeMenu=function(){menu.hidden=true;mb.setAttribute("aria-expanded","false");};
+    mb.addEventListener("click",function(e){e.stopPropagation();var willOpen=menu.hidden;menu.hidden=!willOpen;mb.setAttribute("aria-expanded",willOpen?"true":"false");});
+    document.addEventListener("click",function(e){if(!menu.contains(e.target))closeMenu();});
+    document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMenu();});
+    if(cp)cp.addEventListener("click",function(){
+      var em="xreach111@gmail.com";
+      var done=function(){cp.textContent="Copied \u2713";setTimeout(function(){cp.textContent="Copy email address";},1800);};
+      var fb=function(){var ta=document.createElement("textarea");ta.value=em;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(_){}document.body.removeChild(ta);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(em).then(done,fb);}else{fb();}
+    });
+  }
+  /* ===== Agent X button: wider search if the first one missed it ===== */
+  var AG='<svg class="xr-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2l8.5 5v10L12 22l-8.5-5V7z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="xr-txt">Agent X</span><i class="xr-dot"></i>';
+  var tries=0;
+  function loose(){
+    if(q(".xr-agent")) return true;
+    var W=window.innerWidth,H=window.innerHeight,list=document.body.querySelectorAll("*");
+    for(var i=0;i<list.length;i++){
+      var el=list[i];
+      if(/^(IMG|INPUT|IFRAME|SCRIPT|STYLE|SVG|PATH|VIDEO|SOURCE|I)$/i.test(el.tagName)) continue;
+      if(el.closest(".xr-pop-wrap,.xr-connect")) continue;
+      var cs=getComputedStyle(el);
+      if(cs.position!=="fixed"||cs.display==="none"||cs.visibility==="hidden") continue;
+      var r=el.getBoundingClientRect();
+      if(r.width<34||r.width>110||r.height<34||r.height>110) continue;
+      if(r.right<W*0.6||r.bottom<H*0.6) continue;
+      var t=el.tagName==="BUTTON"?el:(el.querySelector("button")||el);
+      t.classList.add("xr-agent");t.setAttribute("data-xr2","1");t.setAttribute("aria-label","Open Agent X chat");
+      var tmp=document.createElement("div");tmp.innerHTML=AG;
+      while(tmp.firstChild){var c=tmp.firstChild;tmp.removeChild(c);if(c.classList)c.classList.add("xr-keep");t.appendChild(c);}
+      return true;
+    }
+    return false;
+  }
+  function loop(){if(loose())return;if(++tries<20)setTimeout(loop,500);else if(window.console)console.warn("XR2: chat button not found");}
+  setTimeout(loop,1500);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
+})();
+</script>
+<!-- XR-FX2 END -->
+<!-- XR-FX START -->
 <style>
 video::-webkit-media-text-track-display{display:none!important}
 .xr-nolabel{display:none!important}
