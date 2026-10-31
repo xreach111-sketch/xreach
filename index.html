@@ -369,58 +369,75 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 })();
 </script>
 <!-- XR-FX END -->
-<!-- XR-FX5 START -->
+
+<!-- XR-FX6 START -->
 <style>
-.xr-xl{background:transparent!important;background-image:none!important;border:0!important;border-radius:50%!important;overflow:hidden!important;isolation:isolate;font-size:0!important;color:transparent!important;animation:xrx5pulse 2.6s ease-in-out infinite!important;transition:transform .3s!important}
+.xr-xl{background:transparent!important;background-image:none!important;border:0!important;border-radius:50%!important;overflow:hidden!important;isolation:isolate;font-size:0!important;color:transparent!important;animation:xrx6pulse 2.6s ease-in-out infinite!important;transition:transform .3s!important}
 .xr-xl:hover,.xr-xl:focus-visible{transform:scale(1.1)!important}
 .xr-xl>*:not(.xr-xlogo){opacity:0!important}
-.xr-xl::before{content:""!important;position:absolute!important;inset:-50%!important;width:auto!important;height:auto!important;margin:0!important;border:0!important;opacity:1!important;transform:none;z-index:-2!important;background:conic-gradient(from 0deg,#00e5ff,#7c5cff,#ff3d6e,#00e5ff)!important;animation:xrx5spin 3s linear infinite!important}
-.xr-xl::after{content:""!important;position:absolute!important;inset:3px!important;width:auto!important;height:auto!important;margin:0!important;border:0!important;opacity:1!important;transform:none!important;animation:none!important;border-radius:50%!important;z-index:-1!important;background:radial-gradient(circle at 30% 25%,#1a1a3d,#07070d 70%)!important}
+.xr-xl::before{content:""!important;position:absolute!important;left:50%!important;top:50%!important;width:200%!important;height:200%!important;margin:-100% 0 0 -100%!important;border:0!important;opacity:1!important;z-index:-2!important;background:conic-gradient(from 0deg,#00e5ff,#7c5cff,#ff3d6e,#00e5ff)!important;animation:xrx6spin 3s linear infinite!important}
+.xr-xl::after{content:""!important;position:absolute!important;inset:3px!important;margin:0!important;border:0!important;opacity:1!important;animation:none!important;border-radius:50%!important;z-index:-1!important;background:radial-gradient(circle at 30% 25%,#1a1a3d,#07070d 70%)!important}
 .xr-xlogo{position:absolute;left:50%;top:50%;width:46%;height:46%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;filter:drop-shadow(0 0 6px rgba(0,229,255,.9));transition:transform .4s}
 .xr-xl:hover .xr-xlogo{transform:translate(-50%,-50%) rotate(90deg)}
-@keyframes xrx5spin{to{transform:rotate(360deg)}}
-@keyframes xrx5pulse{0%,100%{box-shadow:0 0 16px rgba(0,229,255,.35),0 0 36px rgba(124,92,255,.25)}50%{box-shadow:0 0 28px rgba(0,229,255,.65),0 0 64px rgba(124,92,255,.45)}}
+@keyframes xrx6spin{to{transform:rotate(360deg)}}
+@keyframes xrx6pulse{0%,100%{box-shadow:0 0 16px rgba(0,229,255,.35),0 0 36px rgba(124,92,255,.25)}50%{box-shadow:0 0 28px rgba(0,229,255,.65),0 0 64px rgba(124,92,255,.45)}}
 @media (prefers-reduced-motion:reduce){.xr-xl,.xr-xl::before{animation:none!important}.xr-xl:hover .xr-xlogo{transform:translate(-50%,-50%)}}
 </style>
 <script>
 (function(){
 "use strict";
-var el=null,tries=0,obs=null;
-var LOGO='<svg class="xr-xlogo" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="xrx5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset=".55" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff3d6e"/></linearGradient></defs><path d="M5 5l14 14M19 5L5 19" stroke="url(#xrx5)" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg>';
-function mine(n){return n.closest&&n.closest(".xr-pop-wrap,.xr-connect");}
-function scan(strict){
-  var W=window.innerWidth,H=window.innerHeight,all=document.body.querySelectorAll("*"),best=null,bd=1e9;
-  for(var i=0;i<all.length;i++){
-    var n=all[i];
-    if(/^(IMG|INPUT|IFRAME|SCRIPT|STYLE|SVG|PATH|VIDEO|SOURCE|I|TEXTAREA|LINE|CIRCLE|DEFS|G)$/i.test(n.tagName)) continue;
-    if(mine(n)) continue;
-    var cs=getComputedStyle(n);
-    if(cs.display==="none"||cs.visibility==="hidden") continue;
-    if(strict&&cs.position!=="fixed") continue;
-    if(!strict&&cs.cursor!=="pointer") continue;
-    var r=n.getBoundingClientRect();
-    if(r.width<34||r.width>150||r.height<34||r.height>150) continue;
-    if(r.right<W*0.6||r.bottom<H*0.6||r.right>W+2||r.bottom>H+2) continue;
-    var d=(W-r.right)+(H-r.bottom);
-    if(d<bd){bd=d;best=n;}
+var el=null,tries=0,bad=[];
+var LOGO='<svg class="xr-xlogo" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="xrx6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset=".55" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff3d6e"/></linearGradient></defs><path d="M5 5l14 14M19 5L5 19" stroke="url(#xrx6)" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg>';
+function ok(n){
+  if(bad.indexOf(n)>-1) return false;
+  if(n.closest(".xr-pop-wrap,.xr-connect")) return false;
+  if(/^(INPUT|TEXTAREA|FORM|IFRAME|SCRIPT|STYLE|SVG|PATH|VIDEO|SOURCE|IMG|I|LINE|CIRCLE|DEFS|G|HTML|BODY)$/i.test(n.tagName)) return false;
+  if(n.querySelector("input,textarea,form,video,iframe")) return false;
+  var cs=getComputedStyle(n);
+  if(cs.display==="none"||cs.visibility==="hidden") return false;
+  var W=window.innerWidth,H=window.innerHeight,r=n.getBoundingClientRect();
+  if(r.width<34||r.width>110||r.height<34||r.height>110) return false;
+  if(r.right<W*0.6||r.bottom<H*0.6||r.right>W+2||r.bottom>H+2) return false;
+  return true;
+}
+function find(){
+  var W=window.innerWidth,H=window.innerHeight,list=document.body.querySelectorAll("button,[role=button],a,div,span"),best=null,bs=1e12;
+  for(var i=0;i<list.length;i++){
+    var n=list[i];
+    if(!ok(n)) continue;
+    var r=n.getBoundingClientRect(),d=(W-r.right)+(H-r.bottom);
+    var score=d+(n.tagName==="BUTTON"?0:2000)+(n.getAttribute("role")==="button"?500:0)+r.width*r.height/50;
+    if(score<bs){bs=score;best=n;}
   }
   return best;
 }
-function addLogo(){if(el&&!el.querySelector(":scope > .xr-xlogo"))el.insertAdjacentHTML("beforeend",LOGO);}
+function unstyle(n){
+  n.classList.remove("xr-xl");
+  var l=n.querySelector(":scope > .xr-xlogo");if(l)l.remove();
+}
 function apply(){
-  if(!el||!document.body.contains(el)){el=scan(true)||scan(false);}
-  if(!el){if(++tries<30)setTimeout(apply,500);else if(window.console)console.warn("XR5: chat button not found");return;}
+  if(!el||!document.body.contains(el)||bad.indexOf(el)>-1){el=find();}
+  if(!el){if(++tries<30)setTimeout(apply,500);else if(window.console)console.warn("XR6: chat button not found");return;}
   if(getComputedStyle(el).position==="static")el.style.position="relative";
   el.classList.add("xr-xl");
   el.setAttribute("aria-label","Open Agent X chat");
-  addLogo();
-  if(!obs){obs=new MutationObserver(addLogo);obs.observe(el,{childList:true});}
+  if(!el.querySelector(":scope > .xr-xlogo"))el.insertAdjacentHTML("beforeend",LOGO);
+  if(window.console)console.log("XR6 styled:",el);
+}
+function guard(){
+  if(!el) return;
+  var r=el.getBoundingClientRect();
+  if(r.width>130||r.height>130||el.querySelector("input,textarea")){
+    unstyle(el);bad.push(el);el=null;apply();
+  }else if(!el.querySelector(":scope > .xr-xlogo")&&el.classList.contains("xr-xl")){
+    el.insertAdjacentHTML("beforeend",LOGO);
+  }
 }
 window.xrOpenAgent=function(){if(el)el.click();};
-function init(){setTimeout(apply,1200);}
+function init(){setTimeout(apply,1200);setInterval(guard,800);}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
-<!-- XR-FX5 END -->
+<!-- XR-FX6 END -->
 </body></html>
 the search text
