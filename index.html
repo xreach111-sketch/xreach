@@ -238,7 +238,7 @@ function setup(){
     return false;
   }
   function loop(){if(loose())return;if(++tries<20)setTimeout(loop,500);else if(window.console)console.warn("XR2: chat button not found");}
-  setTimeout(loop,1500);
+  
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
 })();
@@ -357,11 +357,11 @@ function show(){
   p.addEventListener("mouseenter",function(){clearTimeout(life);});
   p.addEventListener("mouseleave",function(){life=setTimeout(done,2000);});
   x.addEventListener("click",function(e){e.stopPropagation();stopped=true;try{sessionStorage.setItem("xrPopOff","1");}catch(_){}finished=true;clearTimeout(life);hide(p);});
-  p.addEventListener("click",function(){var a=document.querySelector(".xr-agent");if(a)a.click();});
+  p.addEventListener("click",function(){if(window.xrOpenAgent)window.xrOpenAgent();});
 }
 function init(){
   document.body.appendChild(wrap);
-  cleanLabels();styleAgent();
+  cleanLabels();
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});
   setTimeout(show,6000);
 }
