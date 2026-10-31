@@ -161,3 +161,9 @@ def clips():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# AGENT_X_BRAIN_OVERRIDE
+from agent_x_brain import AGENT_X_SYSTEM as _AX
+for _n in list(globals()):
+    if _n.isupper() and ("SYSTEM" in _n or "PROMPT" in _n) and isinstance(globals()[_n], str):
+        globals()[_n] = _AX
