@@ -238,7 +238,7 @@ function setup(){
     return false;
   }
   function loop(){if(loose())return;if(++tries<20)setTimeout(loop,500);else if(window.console)console.warn("XR2: chat button not found");}
-  
+  setTimeout(loop,1500);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
 })();
@@ -357,11 +357,11 @@ function show(){
   p.addEventListener("mouseenter",function(){clearTimeout(life);});
   p.addEventListener("mouseleave",function(){life=setTimeout(done,2000);});
   x.addEventListener("click",function(e){e.stopPropagation();stopped=true;try{sessionStorage.setItem("xrPopOff","1");}catch(_){}finished=true;clearTimeout(life);hide(p);});
-  p.addEventListener("click",function(){if(window.xrOpenAgent)window.xrOpenAgent();});
+  p.addEventListener("click",function(){var a=document.querySelector(".xr-agent");if(a)a.click();});
 }
 function init(){
   document.body.appendChild(wrap);
-  cleanLabels();
+  cleanLabels();styleAgent();
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});
   setTimeout(show,6000);
 }
@@ -369,63 +369,160 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 })();
 </script>
 <!-- XR-FX END -->
-<!-- XR-FX3 START -->
+<!-- XR-FX4 START -->
 <style>
-.xr-orig-hidden{opacity:0!important;pointer-events:none!important}
-.xr-xbtn{position:fixed;right:22px;bottom:22px;width:60px;height:60px;border:0;padding:0;border-radius:50%;background:transparent;cursor:pointer;z-index:99999;isolation:isolate;overflow:hidden;display:grid;place-items:center;animation:xrxpulse 2.6s ease-in-out infinite;transition:transform .3s}
-.xr-xbtn:hover,.xr-xbtn:focus-visible{transform:scale(1.12) rotate(90deg);outline:none}
-.xr-xbtn::before{content:"";position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px 0 0 -60px;z-index:-2;background:conic-gradient(from 0deg,#00e5ff,#7c5cff,#ff3d6e,#00e5ff);animation:xrxspin 3s linear infinite}
-.xr-xbtn::after{content:"";position:absolute;inset:3px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#1a1a3d,#07070d 70%);z-index:-1}
-.xr-xbtn svg{width:28px;height:28px;filter:drop-shadow(0 0 6px rgba(0,229,255,.9))}
-@keyframes xrxspin{to{transform:rotate(360deg)}}
-@keyframes xrxpulse{0%,100%{box-shadow:0 0 16px rgba(0,229,255,.35),0 0 36px rgba(124,92,255,.25)}50%{box-shadow:0 0 28px rgba(0,229,255,.65),0 0 64px rgba(124,92,255,.45)}}
-@media (max-width:560px){.xr-xbtn{right:14px;bottom:14px}}
-@media (prefers-reduced-motion:reduce){.xr-xbtn,.xr-xbtn::before{animation:none!important}.xr-xbtn:hover{transform:none}}
+.xc-panel{position:fixed;right:22px;bottom:96px;width:min(390px,calc(100vw - 28px));height:min(580px,calc(100vh - 124px));display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:rgba(11,11,22,.97);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 70px rgba(0,0,0,.6),0 0 40px rgba(124,92,255,.25);color:#f2f4ff;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;z-index:99998;opacity:0;transform:translateY(18px) scale(.96);pointer-events:none;transition:opacity .25s,transform .3s cubic-bezier(.2,.9,.3,1.1)}
+.xc-panel.xc-open{opacity:1;transform:none;pointer-events:auto}
+.xc-head{display:flex;align-items:center;gap:10px;padding:14px 14px 12px;background:linear-gradient(135deg,rgba(0,229,255,.14),rgba(124,92,255,.22));border-bottom:1px solid rgba(255,255,255,.1)}
+.xc-av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#1a1a3d,#07070d 70%);border:2px solid #7c5cff;box-shadow:0 0 14px rgba(0,229,255,.4)}
+.xc-av svg{width:18px;height:18px}
+.xc-ht{flex:1;min-width:0}
+.xc-ht b{display:block;font-size:15px;letter-spacing:.04em}
+.xc-ht span{font-size:12px;color:#9fe9b8}
+.xc-ht span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#2dff9a;margin-right:6px}
+.xc-ib{flex:none;width:32px;height:32px;border:0;border-radius:9px;background:rgba(255,255,255,.08);color:#dfe3ff;font-size:16px;line-height:1;cursor:pointer}
+.xc-ib:hover,.xc-ib:focus-visible{background:rgba(255,255,255,.18);outline:none}
+.xc-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.xc-m{max-width:86%;padding:10px 13px;border-radius:16px;word-wrap:break-word;overflow-wrap:anywhere}
+.xc-b{align-self:flex-start;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-bottom-left-radius:5px}
+.xc-u{align-self:flex-end;background:linear-gradient(135deg,#7c5cff,#e0307a);color:#fff;border-bottom-right-radius:5px}
+.xc-m a{color:#7ff4ff;text-decoration:underline}
+.xc-u a{color:#fff}
+.xc-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.xc-chip{border:1px solid rgba(124,92,255,.6);background:rgba(124,92,255,.14);color:#e8e6ff;padding:8px 12px;border-radius:99px;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;transition:background .2s,transform .2s}
+.xc-chip:hover,.xc-chip:focus-visible{background:rgba(124,92,255,.38);transform:translateY(-2px);outline:none}
+.xc-typing{align-self:flex-start;display:flex;align-items:center;gap:8px;color:#aab0d4;font-size:12px}
+.xc-dots{display:flex;gap:4px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.08)}
+.xc-dots i{width:6px;height:6px;border-radius:50%;background:#7ff4ff;animation:xcb 1.1s infinite}
+.xc-dots i:nth-child(2){animation-delay:.15s}
+.xc-dots i:nth-child(3){animation-delay:.3s}
+@keyframes xcb{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.xc-form{display:flex;gap:8px;align-items:flex-end;padding:10px 12px;border-top:1px solid rgba(255,255,255,.1)}
+.xc-in{flex:1;resize:none;max-height:100px;min-height:40px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;font:14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif}
+.xc-in:focus{outline:none;border-color:#7c5cff;box-shadow:0 0 0 3px rgba(124,92,255,.3)}
+.xc-in::placeholder{color:#8a90b5}
+.xc-send{flex:none;width:42px;height:42px;border:0;border-radius:12px;background:linear-gradient(135deg,#00e5ff,#7c5cff);color:#fff;cursor:pointer;display:grid;place-items:center;transition:transform .2s,opacity .2s}
+.xc-send:hover{transform:scale(1.06)}
+.xc-send:disabled{opacity:.45;cursor:default;transform:none}
+.xc-send svg{width:20px;height:20px}
+.xc-links{display:flex;justify-content:center;gap:16px;padding:0 12px 10px;font-size:12px}
+.xc-links a{color:#9aa0c4;text-decoration:none}
+.xc-links a:hover{color:#7ff4ff}
+@media (max-width:560px){.xc-panel{inset:0;width:100%;height:100%;border-radius:0;right:0;bottom:0}}
+@media (prefers-reduced-motion:reduce){.xc-panel,.xc-chip{transition:opacity .15s}.xc-dots i{animation:none}.xc-log{scroll-behavior:auto}}
 </style>
 <script>
 (function(){
 "use strict";
-var orig=null,tries=0;
-function mine(el){return el.closest&&el.closest(".xr-xbtn,.xr-pop-wrap,.xr-connect");}
-function findOrig(){
-  var W=window.innerWidth,H=window.innerHeight,list=document.body.querySelectorAll("*");
-  for(var i=0;i<list.length;i++){
-    var el=list[i];
-    if(/^(IMG|INPUT|IFRAME|SCRIPT|STYLE|SVG|PATH|VIDEO|SOURCE|I|TEXTAREA)$/i.test(el.tagName)) continue;
-    if(mine(el)) continue;
-    var cs=getComputedStyle(el);
-    if(cs.position!=="fixed"||cs.display==="none"||cs.visibility==="hidden") continue;
-    var r=el.getBoundingClientRect();
-    if(r.width<34||r.width>150||r.height<34||r.height>150) continue;
-    if(r.right<W*0.6||r.bottom<H*0.6) continue;
-    return el;
-  }
-  return null;
+var URL_="/chat",KEY="xrChat";
+var hist=[],busy=false,panel,log,input,sendBtn,btn,typingEl,chipsEl,tries=0;
+try{hist=JSON.parse(sessionStorage.getItem(KEY)||"[]");if(!Array.isArray(hist))hist=[];}catch(e){hist=[];}
+function save(){try{sessionStorage.setItem(KEY,JSON.stringify(hist.slice(-30)));}catch(e){}}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fmt(s){
+  var h=esc(s);
+  h=h.replace(/\*\*([^*\n]+)\*\*/g,"<strong>$1</strong>");
+  h=h.replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g,'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+  return h.replace(/\n/g,"<br>");
 }
-window.xrOpenAgent=function(){
-  if(!orig) orig=findOrig();
-  if(!orig){var c=document.getElementById("connect");if(c)c.scrollIntoView({behavior:"smooth"});return;}
-  var t=(orig.tagName==="BUTTON")?orig:(orig.querySelector("button,[role=button],a")||orig);
-  t.click();
-};
-function hideOrig(){
-  if(!orig) orig=findOrig();
-  if(orig){orig.classList.add("xr-orig-hidden");return;}
-  if(++tries<20) setTimeout(hideOrig,500);
+function down(){log.scrollTop=log.scrollHeight;}
+function addMsg(role,text){
+  var d=document.createElement("div");
+  d.className="xc-m "+(role==="user"?"xc-u":"xc-b");
+  d.innerHTML=fmt(text);
+  log.appendChild(d);down();return d;
 }
-function init(){
-  if(document.querySelector(".xr-xbtn")) return;
-  var b=document.createElement("button");
-  b.type="button";b.className="xr-xbtn";b.title="Agent X";
-  b.setAttribute("aria-label","Open Agent X chat");
-  b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="xrxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset="1" stop-color="#ff3d6e"/></linearGradient></defs><path d="M5 5l14 14M19 5L5 19" stroke="url(#xrxg)" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg>';
-  b.addEventListener("click",window.xrOpenAgent);
-  document.body.appendChild(b);
-  setTimeout(hideOrig,1200);
+function showTyping(){
+  typingEl=document.createElement("div");typingEl.className="xc-typing";
+  typingEl.innerHTML='<div class="xc-dots"><i></i><i></i><i></i></div><span>Agent X is typing\u2026</span>';
+  log.appendChild(typingEl);down();
 }
-if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+function hideTyping(){if(typingEl&&typingEl.parentNode)typingEl.parentNode.removeChild(typingEl);typingEl=null;}
+function pick(d){
+  if(typeof d==="string")return d;
+  if(!d)return "";
+  var k=["reply","response","answer","message","text","content","output"];
+  for(var i=0;i<k.length;i++){if(typeof d[k[i]]==="string"&&d[k[i]])return d[k[i]];}
+  if(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)return d.choices[0].message.content;
+  if(d.message&&typeof d.message.content==="string")return d.message.content;
+  return "";
+}
+var FALLBACK="I'm having trouble connecting right now. Please reach us on WhatsApp at 9529752648 or email xreach111@gmail.com and we will reply quickly.";
+function send(text){
+  text=(text||"").trim();
+  if(!text||busy)return;
+  if(chipsEl){chipsEl.remove();chipsEl=null;}
+  addMsg("user",text);
+  hist.push({role:"user",content:text});save();
+  input.value="";input.style.height="40px";
+  busy=true;sendBtn.disabled=true;showTyping();
+  var recent=hist.slice(-12);
+  var ctl=("AbortController" in window)?new AbortController():null;
+  var to=setTimeout(function(){if(ctl)ctl.abort();},45000);
+  fetch(URL_,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:recent,message:text,history:recent.slice(0,-1)}),signal:ctl?ctl.signal:undefined})
+  .then(function(r){return r.text().then(function(t){var d;try{d=JSON.parse(t);}catch(e){d=t;}return {ok:r.ok,d:d};});})
+  .then(function(o){
+    var ans=pick(o.d);
+    hideTyping();
+    if(ans&&(o.ok||typeof o.d==="object")){addMsg("bot",ans);hist.push({role:"assistant",content:ans});save();}
+    else{addMsg("bot",FALLBACK);}
+  })
+  .catch(function(){hideTyping();addMsg("bot",FALLBACK);})
+  .then(function(){clearTimeout(to);busy=false;sendBtn.disabled=false;if(panel.classList.contains("xc-open"))input.focus();});
+}
+var CHIPS=["Get a free sample","How does it work?","Pricing","Plan for my channel","Talk to the founder"];
+function welcome(){
+  addMsg("bot","Hi, I'm Agent X, the AI assistant of X Reach. Tell me about your channel and I'll map out a clip and distribution plan for you. What would you like to know?");
+  chipsEl=document.createElement("div");chipsEl.className="xc-chips";
+  CHIPS.forEach(function(c){
+    var b=document.createElement("button");b.type="button";b.className="xc-chip";b.textContent=c;
+    b.addEventListener("click",function(){send(c);});
+    chipsEl.appendChild(b);
+  });
+  log.appendChild(chipsEl);down();
+}
+function restore(){
+  log.innerHTML="";
+  if(!hist.length){welcome();return;}
+  hist.forEach(function(m){addMsg(m.role==="user"?"user":"bot",m.content);});
+}
+function open_(){panel.classList.add("xc-open");if(btn)btn.setAttribute("aria-expanded","true");setTimeout(function(){input.focus();down();},250);}
+function close_(){panel.classList.remove("xc-open");if(btn)btn.setAttribute("aria-expanded","false");}
+function toggle(){if(panel.classList.contains("xc-open"))close_();else open_();}
+function build(){
+  panel=document.createElement("div");
+  panel.className="xc-panel";panel.setAttribute("role","dialog");panel.setAttribute("aria-label","Agent X chat");
+  panel.innerHTML=
+  '<div class="xc-head"><div class="xc-av"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="xcg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset="1" stop-color="#ff3d6e"/></linearGradient></defs><path d="M5 5l14 14M19 5L5 19" stroke="url(#xcg)" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg></div>'+
+  '<div class="xc-ht"><b>Agent X</b><span>AI assistant \u00B7 X Reach</span></div>'+
+  '<button type="button" class="xc-ib xc-clear" title="Clear chat" aria-label="Clear chat">\u21BA</button>'+
+  '<button type="button" class="xc-ib xc-close" title="Close" aria-label="Close chat">\u00D7</button></div>'+
+  '<div class="xc-log" role="log" aria-live="polite"></div>'+
+  '<div class="xc-form"><textarea class="xc-in" rows="1" placeholder="Ask anything about X Reach\u2026" aria-label="Message"></textarea>'+
+  '<button type="button" class="xc-send" aria-label="Send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L21 3l-8.5 18-2.2-7.3z" fill="currentColor"/></svg></button></div>'+
+  '<div class="xc-links"><a href="https://wa.me/919529752648" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="https://www.instagram.com/x.reachh" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.linkedin.com/in/x-reach-2076b8426" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="mailto:xreach111@gmail.com">Email</a></div>';
+  document.body.appendChild(panel);
+  log=panel.querySelector(".xc-log");input=panel.querySelector(".xc-in");sendBtn=panel.querySelector(".xc-send");
+  panel.querySelector(".xc-close").addEventListener("click",close_);
+  panel.querySelector(".xc-clear").addEventListener("click",function(){hist=[];save();hideTyping();restore();});
+  sendBtn.addEventListener("click",function(){send(input.value);});
+  input.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send(input.value);}});
+  input.addEventListener("input",function(){input.style.height="40px";input.style.height=Math.min(input.scrollHeight,100)+"px";});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&panel.classList.contains("xc-open"))close_();});
+  restore();
+  window.xrOpenAgent=open_;
+}
+function hook(){
+  var b=document.querySelector(".xr-xbtn");
+  if(!b){if(++tries<40)setTimeout(hook,250);return;}
+  var n=b.cloneNode(true);b.parentNode.replaceChild(n,b);
+  btn=n;n.setAttribute("aria-haspopup","dialog");n.setAttribute("aria-expanded","false");
+  n.addEventListener("click",toggle);
+}
+function init(){build();hook();}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
-<!-- XR-FX3 END -->
+<!-- XR-FX4 END -->
 </body></html>
 the search text
