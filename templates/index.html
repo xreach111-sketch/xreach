@@ -552,7 +552,7 @@ function setup(){
     return false;
   }
   function loop(){if(loose())return;if(++tries<20)setTimeout(loop,500);else if(window.console)console.warn("XR2: chat button not found");}
-  setTimeout(loop,1500);
+  
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
 })();
@@ -671,11 +671,11 @@ function show(){
   p.addEventListener("mouseenter",function(){clearTimeout(life);});
   p.addEventListener("mouseleave",function(){life=setTimeout(done,2000);});
   x.addEventListener("click",function(e){e.stopPropagation();stopped=true;try{sessionStorage.setItem("xrPopOff","1");}catch(_){}finished=true;clearTimeout(life);hide(p);});
-  p.addEventListener("click",function(){var a=document.querySelector(".xr-agent");if(a)a.click();});
+  p.addEventListener("click",function(){if(window.xrOpenAgent)window.xrOpenAgent();});
 }
 function init(){
   document.body.appendChild(wrap);
-  cleanLabels();styleAgent();
+  cleanLabels();
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});
   setTimeout(show,6000);
 }
@@ -683,4 +683,62 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 })();
 </script>
 <!-- XR-FX END -->
+<!-- XR-FX3 START -->
+<style>
+.xr-orig-hidden{opacity:0!important;pointer-events:none!important}
+.xr-xbtn{position:fixed;right:22px;bottom:22px;width:60px;height:60px;border:0;padding:0;border-radius:50%;background:transparent;cursor:pointer;z-index:99999;isolation:isolate;overflow:hidden;display:grid;place-items:center;animation:xrxpulse 2.6s ease-in-out infinite;transition:transform .3s}
+.xr-xbtn:hover,.xr-xbtn:focus-visible{transform:scale(1.12) rotate(90deg);outline:none}
+.xr-xbtn::before{content:"";position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px 0 0 -60px;z-index:-2;background:conic-gradient(from 0deg,#00e5ff,#7c5cff,#ff3d6e,#00e5ff);animation:xrxspin 3s linear infinite}
+.xr-xbtn::after{content:"";position:absolute;inset:3px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#1a1a3d,#07070d 70%);z-index:-1}
+.xr-xbtn svg{width:28px;height:28px;filter:drop-shadow(0 0 6px rgba(0,229,255,.9))}
+@keyframes xrxspin{to{transform:rotate(360deg)}}
+@keyframes xrxpulse{0%,100%{box-shadow:0 0 16px rgba(0,229,255,.35),0 0 36px rgba(124,92,255,.25)}50%{box-shadow:0 0 28px rgba(0,229,255,.65),0 0 64px rgba(124,92,255,.45)}}
+@media (max-width:560px){.xr-xbtn{right:14px;bottom:14px}}
+@media (prefers-reduced-motion:reduce){.xr-xbtn,.xr-xbtn::before{animation:none!important}.xr-xbtn:hover{transform:none}}
+</style>
+<script>
+(function(){
+"use strict";
+var orig=null,tries=0;
+function mine(el){return el.closest&&el.closest(".xr-xbtn,.xr-pop-wrap,.xr-connect");}
+function findOrig(){
+  var W=window.innerWidth,H=window.innerHeight,list=document.body.querySelectorAll("*");
+  for(var i=0;i<list.length;i++){
+    var el=list[i];
+    if(/^(IMG|INPUT|IFRAME|SCRIPT|STYLE|SVG|PATH|VIDEO|SOURCE|I|TEXTAREA)$/i.test(el.tagName)) continue;
+    if(mine(el)) continue;
+    var cs=getComputedStyle(el);
+    if(cs.position!=="fixed"||cs.display==="none"||cs.visibility==="hidden") continue;
+    var r=el.getBoundingClientRect();
+    if(r.width<34||r.width>150||r.height<34||r.height>150) continue;
+    if(r.right<W*0.6||r.bottom<H*0.6) continue;
+    return el;
+  }
+  return null;
+}
+window.xrOpenAgent=function(){
+  if(!orig) orig=findOrig();
+  if(!orig){var c=document.getElementById("connect");if(c)c.scrollIntoView({behavior:"smooth"});return;}
+  var t=(orig.tagName==="BUTTON")?orig:(orig.querySelector("button,[role=button],a")||orig);
+  t.click();
+};
+function hideOrig(){
+  if(!orig) orig=findOrig();
+  if(orig){orig.classList.add("xr-orig-hidden");return;}
+  if(++tries<20) setTimeout(hideOrig,500);
+}
+function init(){
+  if(document.querySelector(".xr-xbtn")) return;
+  var b=document.createElement("button");
+  b.type="button";b.className="xr-xbtn";b.title="Agent X";
+  b.setAttribute("aria-label","Open Agent X chat");
+  b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="xrxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset="1" stop-color="#ff3d6e"/></linearGradient></defs><path d="M5 5l14 14M19 5L5 19" stroke="url(#xrxg)" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg>';
+  b.addEventListener("click",window.xrOpenAgent);
+  document.body.appendChild(b);
+  setTimeout(hideOrig,1200);
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
+<!-- XR-FX3 END -->
 </body></html>
